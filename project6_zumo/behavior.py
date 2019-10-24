@@ -5,6 +5,7 @@ Created on Thu Oct 24 09:05:15 2019
 @author: Joule
 """
 
+
 class Behavior:
     """The core of BBR are the behaviors themselves, each a modular unit designed to analyze a subset
     of the sensory information as the basis for determining a motor request. Behaviors operate in a
@@ -45,7 +46,7 @@ class Behavior:
     def consider_deactivation(self):
         """whenever a behavior is active, it should test whether it should deactivate."""
         pass
-    
+
     def consider_activation(self):
         """whenever a behavior is inactive, it should test whether it should activate."""
         pass
@@ -58,6 +59,7 @@ class Behavior:
         """the core computations performed by the behavior that use sensob readings
         to produce motor recommendations (and halt requests)"""
         pass
+
 
 """The call to update will initiate calls to these other methods, since an update will involve the following activities:
 • Update the activity status - Each behavior will have its own tests for becoming active or
