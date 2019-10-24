@@ -1,6 +1,7 @@
+import os
+
 import numpy as np
 import cv2 as cv
-import os
 
 from project6_zumo.sensobs.sensob import Sensob
 
