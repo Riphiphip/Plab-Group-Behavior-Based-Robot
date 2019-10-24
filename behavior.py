@@ -5,6 +5,7 @@ Created on Thu Oct 24 09:05:15 2019
 @author: Joule
 """
 
+
 class Behavior:
     """The core of BBR are the behaviors themselves, each a modular unit designed to analyze a subset
 of the sensory information as the basis for determining a motor request. Behaviors operate in a
@@ -15,6 +16,7 @@ It violates the fundamental principles of BBR to design behaviors that communica
 One important condition for receiving a passing mark on this project is that your group’s code obey’s this simple, yet extremely
 important, principle.
 """
+
     def __init__(self):
         """The primary instance variables for a behavior object are the following:
             1. bbcon - pointer to the controller that uses this behavior.
@@ -30,18 +32,17 @@ important, principle.
             8. weight - the product of the priority and the match degree, which the arbitrator uses as the
             basis for selecting the winning behavior for a timestep.
             """
-            
-            """As a brief review of these variables, the pointer up to the bbcon allows each behavior to check
+
+        """As a brief review of these variables, the pointer up to the bbcon allows each behavior to check
             the bbcon for any important posts (by other behaviors) in cases where limited interaction between
             behaviors occurs. This should not be a dominant factor in your implementation, as a behavior
             should base its motor recommendations primarily on sensobs, but occasionally it can save a lot
-            of work if one behavior posts information to the bbcon that another behavior can read. The bbcon pointer also enables easy coordination in cases where a behavior activates or deactives (based
-                                                                                                                                                                                                      on sensory input) and needs to inform the bbcon (in order to be added or removed from bbcon.active behaviors)."""
+            of work if one behavior posts information to the bbcon that another behavior can read. The bbcon pointer also enables easy coordination in cases where a behavior activates or deactives (on sensory input) and needs to inform the bbcon (in order to be added or removed from bbcon.active behaviors)."""
 
     def consider_deactivation(self):
         """whenever a behavior is active, it should test whether it should deactivate."""
         pass
-    
+
     def consider_activation(self):
         """whenever a behavior is inactive, it should test whether it should activate."""
         pass
@@ -54,6 +55,7 @@ important, principle.
         """the core computations performed by the behavior that use sensob readings
         to produce motor recommendations (and halt requests)"""
         pass
+
 
 """The call to update will initiate calls to these other methods, since an update will involve the following activities:
 • Update the activity status - Each behavior will have its own tests for becoming active or
