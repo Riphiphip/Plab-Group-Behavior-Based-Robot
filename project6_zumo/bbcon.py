@@ -69,7 +69,7 @@ should contain (at least) the following instance variables:"""
         way."""
         for sensob in self.sensobs:
             sensob.update() # Updates the sensob objects internal states
-        for behavior in behaviors:
+        for behavior in self.behaviors:
             behavior.update() # Looks at the sensob objects internal state
         motor_recommendations, is_halting = self.arbitrator.choose_action()
 
