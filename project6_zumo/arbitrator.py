@@ -33,7 +33,7 @@ of stochasticity. 4
     def __init__(self):
         self.behaviors = []
 
-    def add_behavior(behavior):
+    def add_behavior(self, behavior):
         self.behaviors.append(behavior)
 
     def remove_behavior(self, behavior):
