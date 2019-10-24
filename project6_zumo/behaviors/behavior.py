@@ -65,10 +65,12 @@ class Behavior(ABC):
     @abstractmethod
     def consider_deactivation(self):
         """whenever a behavior is active, it should test whether it should deactivate."""
+        #Skjønner ikke hva denne skal gjøre
 
     @abstractmethod
     def consider_activation(self):
         """whenever a behavior is inactive, it should test whether it should activate."""
+        #Skjønner ikke hva denne skal gjøre
 
     @abstractmethod
     def update(self):
