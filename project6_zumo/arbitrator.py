@@ -27,6 +27,10 @@ You are free to choose a deterministic or a stochastic solution, or to implement
 user decide by setting the value of a simple instance variable (e.g., named stochastic) in the arbitrator. Experience shows that many robotics problems are more easily solved with some element
 of stochasticity. 4
 """
+    def __init__(self):
+        self.behaviors = {}
+    def add_behavior(behavior, weight):
+        self.behaviors[behavior] = weight        
 
     def choose_action(self):
         """Regardless of the selection strategy, choose action should return a tuple containing:
@@ -34,4 +38,5 @@ of stochasticity. 4
 2. a boolean indicating whether or not the run should be halted.
 In the cases of the simple deterministic and the stochastic arbitration strategies, both of these
 values should come directly from the winning behavior."""
+
         pass
