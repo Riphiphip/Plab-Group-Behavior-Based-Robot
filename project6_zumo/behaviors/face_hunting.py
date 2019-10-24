@@ -13,6 +13,7 @@ from project6_zumo.behaviors.behavior import Behavior
 class FaceHunting(Behavior):
 
     def __init__(self, controller: BBCON, priority: float, sensors=[]):
+        if sensors
         self.controller = controller
         self.sensors = sensors
         self.motor_recomendation = (0, 0)
@@ -34,6 +35,4 @@ class FaceHunting(Behavior):
         pass
 
     def sense_and_act(self):
-        """the core computations performed by the behavior that use sensob readings
-        to produce motor recommendations (and halt requests)"""
-        pass
+        faces = self.sensors[0].get_value[0]
