@@ -22,12 +22,10 @@ does a small amount of preprocessing of the (completely) raw sensory data, but t
 that each sensob receives (by calling a wrapper’s get value method) is also fairly basic, and open
 for many additional forms of preprocessing."""
 
-    def __init__(self, sensors=[]):
+    def __init__(self, preprocessing_function, sensors=[]):
+        self.preprocess = preprocessing_function  # args: list of sensor values
         self.sensors = sensors
 
     def update(self):
         raw_output = [s.get_value() for s in self.sensors]
         return self.preprocess(raw_output)
-
-    def preprocess(self, sensor_data):
-        return sensor_data
