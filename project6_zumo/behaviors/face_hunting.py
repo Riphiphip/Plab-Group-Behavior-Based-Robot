@@ -8,6 +8,8 @@ Created on Thu Oct 24 09:05:15 2019
 from project6_zumo.bbcon import BBCON
 from project6_zumo.behaviors.behavior import Behavior
 
+
+
 class FaceHunting(Behavior):
 
     def __init__(self, controller: BBCON, priority: float, sensors=[]):
