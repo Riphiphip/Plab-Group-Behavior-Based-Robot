@@ -36,12 +36,18 @@ class Motob:
         self.value = motor_recommendation
         self.operationalize(motor_recommendation)
 
-    def operationalize(self, motor_recommendation, duration):
-        settings = convert_recommendation_to_motor_settings(
+    def operationalize(self, motor_recommendation):
+        settings, duration = convert_recommendation_to_motor_settings(
             motor_recommendation)
         for i in range(len(self.motors)):
             self.motors[i].set_value(settings[i], dur=duration)
 
     @staticmethod
     def convert_recommendation_to_motor_settings(motor_recommendation):
-        pass
+        direction = motor_recommendation[0]
+        angle = motor_recommendation[1]
+
+        # Må teste hvordan man skal få ut vinkel med motorspeeds og duration, Lineært forhold?
+        motor_settings = None
+        duration = None
+        return motor_settings, duration
