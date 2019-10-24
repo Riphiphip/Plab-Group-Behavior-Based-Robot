@@ -41,7 +41,7 @@ class Motob:
     def operationalize(self, motor_recommendation: (int, float)):
         """Convert a motor recommendation into one or more motor settings,
             which are sent to the corresponding motor(s)."""
-        settings, duration = convert_recommendation_to_motor_settings(
+        settings, duration = self.convert_recommendation_to_motor_settings(
             motor_recommendation)
         for i in range(len(self.motors)):
             self.motors[i].set_value(settings[i], dur=duration)
