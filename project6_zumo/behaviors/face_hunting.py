@@ -10,6 +10,8 @@ from project6_zumo.behaviors.behavior import Behavior
 
 
 class FaceHunting(Behavior):
+    '''Looks at last camera picture and determines whether there is
+        a face or not. Attempts to follow the face if found'''
 
     ROTATION_SPEED = 1
     DRIVE_SPEED = 1
@@ -24,11 +26,10 @@ class FaceHunting(Behavior):
     def consider_deactivation(self):
         """whenever a behavior is active, it should test whether it should deactivate."""
         #Skjønner ikke hva denne skal gjøre
-        pass
 
     def consider_activation(self):
         """whenever a behavior is inactive, it should test whether it should activate."""
-        pass
+        #Skjønner ikke hva denne skal gjøre
 
     def update(self):
         if self.active:
