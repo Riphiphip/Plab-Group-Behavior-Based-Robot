@@ -6,9 +6,10 @@ Created on Thu Oct 24 09:05:15 2019
 """
 
 from project6_zumo.bbcon import BBCON
+from abc import ABC, abstractmethod
 
 
-class Behavior:
+class Behavior(ABC):
     """The core of BBR are the behaviors themselves, each a modular unit designed to analyze a subset
     of the sensory information as the basis for determining a motor request. Behaviors operate in a
     vacuum in the sense that they have no knowledge of or direct connection to other behaviors.
@@ -19,7 +20,7 @@ class Behavior:
     One important condition for receiving a passing mark on this project is that your group’s code obey’s this
     simple, yet extremely important, principle.
     """
-    def __init__(self, controller: BBCON, sensors=[]):
+    def __init__(self, controller: BBCON, priority: float, sensors=[]):
         """
         The primary instance variables for a behavior object are the following:
         1. bbcon - pointer to the controller that uses this behavior.
@@ -49,25 +50,30 @@ class Behavior:
         self.sensors = sensors
         self.motor_recomendation = (0, 0)
         self.active = False
-        self.halt_rec
-        self.priotity
-        self.match_deg
-        self.weight
+        self.halt_rec = False
+        self.priority = 0
+        self.match_deg = 0
 
     def get_weight(self):
+        """Return weight"""
         return self.match_deg * priority
+
+    @abstractmethod
     def consider_deactivation(self):
         """whenever a behavior is active, it should test whether it should deactivate."""
         pass
 
+    @abstractmethod
     def consider_activation(self):
         """whenever a behavior is inactive, it should test whether it should activate."""
         pass
 
+    @abstractmethod
     def update(self):
         """the main interface between the bbcon and the behavior (detailed below)"""
         pass
 
+    @abstractmethod
     def sense_and_act(self):
         """the core computations performed by the behavior that use sensob readings
         to produce motor recommendations (and halt requests)"""
