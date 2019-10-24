@@ -4,6 +4,7 @@ Created on Thu Oct 24 08:25:08 2019
 
 @author: Joule
 """
+from time import sleep
 
 """The highest-level class, BBCON (Behavior-Based Controller) should only require one instance (per
 robot). At each timestep, the robot should call its bbcon to determine its next move. A bbcon
@@ -29,7 +30,7 @@ should contain (at least) the following instance variables:"""
 
     def add_behavior(self, behavior, weight):
         """ append a newly-created behavior onto the behaviors list"""
-        self.behaviors.append((behavior, weight))
+        self.behaviors.append(behavior)
 
     def add_sensob(self, sensob):
         """- append a newly-created sensob onto the sensobs list"""
@@ -38,8 +39,8 @@ should contain (at least) the following instance variables:"""
     def activate_behavior(self, behavior):
         """add an existing behavior onto the active-behaviors list"""
         if behavior in self.behaviors:
-            self.active_behaviors.append(behavior[0])
-            self.arbitrator.add_behavior(behavior[0], behavior[1])
+            self.active_behaviors.append(behavior)
+            self.arbitrator.add_behavior(behavior)
         else:
             print("That behavior does not exist")
 
@@ -66,4 +67,15 @@ should contain (at least) the following instance variables:"""
         forward or turning.
         6. Reset the sensobs - Each sensob may need to reset itself, or its associated sensor(s), in some
         way."""
-        
+        for sensob in self.sensobs:
+            sensob.update() # Updates the sensob objects internal states
+        for behavior in behaviors:
+            behavior.update() # Looks at the sensob objects internal state
+        motor_recommendations, is_halting = self.arbitrator.choose_action()
+
+        if not is_halting:
+            for motob in self.motobs:
+                motob.update(motor_recommendations)
+                sleep(0.05)
+        for sensob in self.sensobs:
+            sensob.reset()
