@@ -21,27 +21,35 @@ should contain (at least) the following instance variables:"""
         4. motobs - a list of all motor objects used by the bbcon
         5. arbitrator - the arbitrator object that will resolve actuator requests produced by the behaviors."""
         self.behaviors = []
-        self.active-behaviors = []
+        self.active_behaviors = []
         self.sensobs = []
         self.motobs = []
-        self.arbitrator = arbitrator
+        self.arbitrator = arbitrator()
         
 
-    def add_behavior(self, behavior):
+    def add_behavior(self, behavior, weight):
         """ append a newly-created behavior onto the behaviors list"""
-        pass
+        self.behaviors.append((behavior, weight))
 
-    def add_sensob(self, sensor):
+    def add_sensob(self, sensob):
         """- append a newly-created sensob onto the sensobs list"""
-        pass
+        self.sensobs.append(sensob)
 
     def activate_behavior(self, behavior):
         """add an existing behavior onto the active-behaviors list"""
-        pass
+        if behavior in self.behaviors:
+            self.active_behaviors.append(behavior[0])
+            self.arbitrator.add_behavior(behavior[0], behavior[1])
+        else:
+            print("That behavior does not exist")
 
     def deactive_behavior(self, behavior):
         """remove an existing behavior from the active behaviors list"""
-        pass
+        if behavior in self.active_behaviors:
+            self.active_behaviors.remove(behavior)
+            self.arbitrator.remove_behavior(behavior)
+        else:
+            print("That behavior does not exist")
 
     def  run_one_timestep(self):
         """In addition, BBCON must include a method named run one timestep, which constitutes the core
@@ -58,4 +66,4 @@ should contain (at least) the following instance variables:"""
         forward or turning.
         6. Reset the sensobs - Each sensob may need to reset itself, or its associated sensor(s), in some
         way."""
-        pass
+        

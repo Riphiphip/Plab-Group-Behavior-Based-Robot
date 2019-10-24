@@ -4,6 +4,8 @@ Created on Thu Oct 24 09:28:46 2019
 
 @author: Joule
 """
+import random
+
 
 class Arbitrator:
     """The arbitrator is a fairly simple class that makes a very important decision at each timestep: which
@@ -28,10 +30,28 @@ user decide by setting the value of a simple instance variable (e.g., named stoc
 of stochasticity. 4
 """
 
+    def __init__(self):
+        self.behaviors = []
+
+    def add_behavior(behavior):
+        self.behaviors.append(behavior)
+
+    def remove_behavior(self, behavior):
+        self.behaviors.remove(behavior)
+
     def choose_action(self):
         """Regardless of the selection strategy, choose action should return a tuple containing:
 1. motor recommendations (one per motob) to move the robot, and
 2. a boolean indicating whether or not the run should be halted.
 In the cases of the simple deterministic and the stochastic arbitration strategies, both of these
 values should come directly from the winning behavior."""
-        pass
+        cummulative_weight_list = [0]
+        for behavior in self.behaviors:
+            cummulative_weight_list.append(
+                cummulative_weight_list[-1] + behavior.get_weight())
+        choice = random.randint(0, cummulative_weight_list[-1])
+        i = 0
+        while cummulative_weight_list[i] < choice:
+            i += 1
+        # i-1 since the first entry in cummulative_weight_list is 0, and the 0th behavior's weight is in the 1st position
+        return (self.behaviors[i-1].motor_recommendation, self.behaviors[i-1].halt_rec)
