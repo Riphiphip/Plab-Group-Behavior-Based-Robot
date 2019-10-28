@@ -21,6 +21,7 @@ class Behavior(ABC):
     that your group’s code obey’s this simple, yet extremely important,
     principle.
     """
+
     def __init__(self, controller: BBCON, priority: float, sensors=list()):
         """
         The primary instance variables for a behavior object are the following:
@@ -65,12 +66,12 @@ class Behavior(ABC):
     @abstractmethod
     def consider_deactivation(self):
         """whenever a behavior is active, it should test whether it should deactivate."""
-        #Skjønner ikke hva denne skal gjøre
+        # Skjønner ikke hva denne skal gjøre
 
     @abstractmethod
     def consider_activation(self):
         """whenever a behavior is inactive, it should test whether it should activate."""
-        #Skjønner ikke hva denne skal gjøre
+        # Skjønner ikke hva denne skal gjøre
 
     @abstractmethod
     def update(self):
@@ -85,16 +86,16 @@ class Behavior(ABC):
 class EdgeDetection(Behavior):
     """Edge detection, avoid falling of the table"""
 
-    def __init__(self, controller, priority, sensors=list()):
+    def __init__(self, controller: BBCON, priority, sensors=list()):
         super().__init__(controller, priority, sensors=sensors)
 
     def consider_deactivation(self):
         """whenever a behavior is active, it should test whether it should deactivate."""
-        #Skjønner ikke hva denne skal gjøre
+        # Skjønner ikke hva denne skal gjøre
 
     def consider_activation(self):
         """whenever a behavior is inactive, it should test whether it should activate."""
-        #Skjønner ikke hva denne skal gjøre
+        # Skjønner ikke hva denne skal gjøre
 
     def update(self):
         """the main interface between the bbcon and the behavior (detailed below)"""
@@ -105,6 +106,8 @@ class EdgeDetection(Behavior):
 
 
 class FaceHunting(Behavior):
+    '''Looks at last camera picture and determines whether there is
+        a face or not. Attempts to follow the face if found'''
 
     ROTATION_SPEED = 1
     DRIVE_SPEED = 1
@@ -118,12 +121,11 @@ class FaceHunting(Behavior):
 
     def consider_deactivation(self):
         """whenever a behavior is active, it should test whether it should deactivate."""
-        #Skjønner ikke hva denne skal gjøre
-        pass
+        # Skjønner ikke hva denne skal gjøre
 
     def consider_activation(self):
         """whenever a behavior is inactive, it should test whether it should activate."""
-        pass
+        # Skjønner ikke hva denne skal gjøre
 
     def update(self):
         if self.active:
@@ -142,19 +144,19 @@ class FaceHunting(Behavior):
                 relevant_face = i
         if relevant_face == -1:
             self.match_deg = 0
-            self.motor_recomendation = (1, self.ROTATION_SPEED)
+            self.motor_recommendation = (1, self.ROTATION_SPEED)
             return
 
-        face_X = faces[relevant_face][0]
-        face_W = faces[relevant_face][2]
+        face_x = faces[relevant_face][0]
+        face_w = faces[relevant_face][2]
         img_middle = self.image_width/2
 
-        if face_X + face_W * 0.6 <= img_middle:
-            self.motor_recomendation = (2, self.ROTATION_SPEED)
-        elif face_X + face_W * 0.4 >= img_middle:
-            self.motor_recomendation = (1, self.ROTATION_SPEED)
+        if face_x + face_w * 0.6 <= img_middle:
+            self.motor_recommendation = (2, self.ROTATION_SPEED)
+        elif face_x + face_w * 0.4 >= img_middle:
+            self.motor_recommendation = (1, self.ROTATION_SPEED)
         else:
-            self.motor_recomendation = (0, self.DRIVE_SPEED)
+            self.motor_recommendation = (0, self.DRIVE_SPEED)
 
         self.match_deg = 1
 
@@ -162,17 +164,17 @@ class FaceHunting(Behavior):
 class RemoteControl(Behavior):
     """Interface for remote control"""
 
-    def __init__(self, controller, priority, sensors=list()):
+    def __init__(self, controller: BBCON, priority, sensors=list()):
         super().__init__(controller, priority, sensors=sensors)
         # Sensors is a UI, like iostream or arrow buttons stream
 
     def consider_deactivation(self):
         """whenever a behavior is active, it should test whether it should deactivate."""
-        #Skjønner ikke hva denne skal gjøre
+        # Skjønner ikke hva denne skal gjøre
 
     def consider_activation(self):
         """whenever a behavior is inactive, it should test whether it should activate."""
-        #Skjønner ikke hva denne skal gjøre
+        # Skjønner ikke hva denne skal gjøre
 
     def update(self):
         """the main interface between the bbcon and the behavior (detailed below)"""
@@ -181,6 +183,8 @@ class RemoteControl(Behavior):
     def sense_and_act(self):
         """the core computations performed by the behavior that use sensob readings
         to produce motor recommendations (and halt requests)"""
+
+
 """
 The call to update will initiate calls to these other methods, since an update will involve the
 following activities:
