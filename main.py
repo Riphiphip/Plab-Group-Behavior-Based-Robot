@@ -12,9 +12,9 @@ def main():
     a = Arbitrator()
     controller = BBCON(a)
     print("Created controller")
-    a.add_behavior(RemoteControl(controller, 10, [sys.stdin]))
+    controller.add_behavior(RemoteControl(controller, 10, [sys.stdin]))
     print("Added behaviors:")
-    for c in controller.behaviors:
+    for c in a.behaviors:
         print(c)
     controller.motobs = [Motob(1)]
     print("Added motob")
