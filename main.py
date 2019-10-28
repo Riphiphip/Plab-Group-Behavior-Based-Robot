@@ -13,6 +13,7 @@ def main():
     controller = BBCON(a)
     print("Created controller")
     controller.add_behavior(RemoteControl(controller, 10, [sys.stdin]))
+    controller.activate_behavior(controller.behaviors[0])
     print("Added behaviors:")
     for c in a.behaviors:
         print(c)
