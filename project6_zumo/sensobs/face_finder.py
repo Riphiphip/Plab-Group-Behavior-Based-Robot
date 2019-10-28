@@ -21,9 +21,9 @@ class FaceFinder(Sensob):
 
     def preprocess(self, sensor_data):
         output = []
-        for im in sensor_data:
+        for image in sensor_data:
             current_camera = []
-            cv_image = np.array(im)
+            cv_image = np.array(image)
             cv_image = cv.cvtColor(cv_image, cv.COLOR_RGB2GRAY)
             faces = self.cascade.detectMultiScale(cv_image, 1.1, 4)
             for (x, y, w, h) in faces:
