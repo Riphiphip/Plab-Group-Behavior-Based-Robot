@@ -19,7 +19,7 @@ class Motob:
     each wheel
     """
 
-    def __init__(self, timestep, motors, turn_speed=1):
+    def __init__(self, timestep, motors=Motors(), turn_speed=1):
         """It contains (at least) the following instance variables:
             1. motors - a list of the motors whose settings will be determined by the motob.
             Nope
