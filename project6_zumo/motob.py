@@ -19,9 +19,10 @@ class Motob:
     each wheel
     """
 
-    def __init__(self, timestep, motors=[], turn_speed=1):
+    def __init__(self, timestep, motors, turn_speed=1):
         """It contains (at least) the following instance variables:
             1. motors - a list of the motors whose settings will be determined by the motob.
+            Nope
             2. value - a holder of the most recent motor recommendation sent to the motob.
         Its primary methods are:
             1. update - receive a new motor recommendation, load it into the value slot, and
@@ -43,14 +44,13 @@ class Motob:
             which are sent to the corresponding motor(s)."""
         settings, duration = self.convert_recommendation_to_motor_settings(
             motor_recommendation)
-        for i in range(len(self.motors)):
-            self.motors[i].set_value(settings[i], dur=duration)
+        self.motors.set_value(settings, dur=duration)
 
     def convert_recommendation_to_motor_settings(self, motor_recommendation: (int, float)):
         """
         Convert MR to MS.
         motor_recommendation:
-         - [0]: int in [0,2], no rotation, right or left
+         - [0]: int in [-1,1]; left
          - [1]: float speed, negative for bakwards
         """
         direction = motor_recommendation[0]
@@ -60,5 +60,5 @@ class Motob:
             return (speed, speed), self.duration
         elif direction == 1:
             return (speed + self.turn_speed, speed - self.turn_speed), self.duration
-        elif direction == 2:
+        elif direction == -1:
             return (speed - self.turn_speed, speed + self.turn_speed), self.duration
