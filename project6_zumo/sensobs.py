@@ -29,7 +29,7 @@ class Sensob(ABC):
     for many additional forms of preprocessing."""
 
     def __init__(self, sensors=[]):
-        self.prevData = None
+        self.prevData = 1
         self.sensors = sensors
 
     def update(self):
