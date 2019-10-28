@@ -4,11 +4,13 @@ from project6_zumo.bbcon import BBCON
 from project6_zumo.arbitrator import Arbitrator
 from project6_zumo.motob import Motob
 from project6_zumo.behaviors import RemoteControl, EdgeDetection
+from project6_supply.sensors.zumo_button import ZumoButton
 
 import sys
 
 
 def main():
+    btn = ZumoButton()
     a = Arbitrator()
     controller = BBCON(a)
     print("Created controller")
