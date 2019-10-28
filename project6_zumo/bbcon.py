@@ -5,7 +5,6 @@ Created on Thu Oct 24 08:25:08 2019
 @author: Joule
 """
 from time import sleep
-from project6_zumo.behaviors import Behavior
 from project6_zumo.arbitrator import Arbitrator
 from project6_zumo.motob import Motob
 from project6_zumo.sensobs import Sensob

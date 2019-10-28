@@ -26,7 +26,7 @@ class Motob:
     each wheel
     """
 
-    def __init__(self, timestep, motors=Motors(), turn_speed=1):
+    def __init__(self):
         """It contains (at least) the following instance variables:
             1. motors - a list of the motors whose settings will be determined by the motob.
             Nope
@@ -36,37 +36,26 @@ class Motob:
             operationalize it.
             2. operationalize - convert a motor recommendation into one or more motor settings,
             which are sent to the corresponding motor(s)."""
-        self.duration = timestep
-        self.turn_speed = turn_speed
-        self.motors = motors
-        self.value = None
+        self.motor = Motors()
+        self.value = ""
 
-    def update(self, motor_recommendation: (int, float)):
+
+    def update(self, motor_recommendation):
         """Set motors to recommended settings"""
         print("I am motob, i will update with recomendations", motor_recommendation)
         self.value = motor_recommendation
-        self.operationalize(motor_recommendation)
+        self.operationalize()
 
-    def operationalize(self, motor_recommendation: (int, float)):
+    def operationalize(self):
         """Convert a motor recommendation into one or more motor settings,
             which are sent to the corresponding motor(s)."""
-        settings, duration = self.convert_recommendation_to_motor_settings(
-            motor_recommendation)
-        self.motors.set_value(settings, dur=duration)
+        print("motob value: ", self.value)
+        if self.value == "drive" :
+            self.motor.forward(.3, 0.5)
+        elif self.value == "stop" :
+            self.motor.stop()
+        elif(self.value == "left"):
+            self.motor.left(.4, .8)
+        elif(self.value == "right"):
+            self.motor.right(.4, 1.5)
 
-    def convert_recommendation_to_motor_settings(self, motor_recommendation: (int, float)):
-        """
-        Convert MR to MS.
-        motor_recommendation:
-         - [0]: int in [-1,1]; left
-         - [1]: float speed, negative for bakwards
-        """
-        direction = motor_recommendation[0]
-        speed = motor_recommendation[1]
-
-        if direction == 0:
-            return (speed, speed), self.duration
-        elif direction == 1:
-            return (speed + self.turn_speed, speed - self.turn_speed), self.duration
-        elif direction == -1:
-            return (speed - self.turn_speed, speed + self.turn_speed), self.duration

@@ -26,22 +26,17 @@ does a small amount of preprocessing of the (completely) raw sensory data, but t
 that each sensob receives (by calling a wrapper’s get value method) is also fairly basic, and open
 for many additional forms of preprocessing."""
 
-    def __init__(self, sensors=[]):
+    def __init__(self, sensor):
         self.prevData = None
-        self.sensors = sensors
+        self.sensor = sensor
 
     def update(self):
-        raw_output = [s.get_value() for s in self.sensors]
-        self.prevData = self.preprocess(raw_output)
+        self.prevData = self.sensor.update()
 
     def get_value(self):
         return self.prevData
 
-    @abstractmethod
-    def preprocess(self, sensor_data):
-        '''Preprocessing of raw data'''
-
-
+"""
 class FaceFinder(Sensob):
 
     def __init__(self, sensors=[]):
@@ -69,3 +64,4 @@ class FaceFinder(Sensob):
                 current_camera.append([x,y,w,h])
             output.append(current_camera)
         return output
+"""
