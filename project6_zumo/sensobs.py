@@ -49,14 +49,6 @@ class FaceFinder(Sensob):
         file_path = "resources/haarcascade_frontalface_default.xml"
         self.cascade = cv.CascadeClassifier(file_path)
 
-    def update(self):
-        for camera in self.sensors:
-            camera.update()
-        raw_output = [s.get_value() for s in self.sensors]
-        self.prevData = self.preprocess(raw_output)
-
-    def get_value(self):
-        return self.prevData
 
     def preprocess(self, sensor_data):
         output = []
@@ -69,3 +61,15 @@ class FaceFinder(Sensob):
                 current_camera.append([x,y,w,h])
             output.append(current_camera)
         return output
+
+
+class EdgeFinder(Sensob):
+    """
+        Uses IR-sensors to look for edge
+    """
+    def preprocess(self, sensor_data):
+        output = []
+        for sensor in sensor_data:
+            output.append(False in sensor)
+        return output
+            
