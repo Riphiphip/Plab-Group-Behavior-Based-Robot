@@ -185,7 +185,7 @@ class RemoteControl(Behavior):
         print("Reading input")
         instr = self.sensors[0].readline().split()
         self.motor_recommendation = (int(instr[0]), float(instr[1]))
-        print("Direction: {} \tSpeed: {}".format(self.motor_recommendation))
+        print("Direction: {} \tSpeed: {}".format(self.motor_recommendation[0], self.motor_recommendation[1]))
         self.match_deg = 1
         return self.motor_recommendation
 
