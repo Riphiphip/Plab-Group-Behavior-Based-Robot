@@ -2,8 +2,10 @@
 """
 Created on Thu Oct 24 09:05:15 2019
 """
+import sys
 
 from abc import ABC, abstractmethod
+from project6_zumo.sensobs import EdgeFinder
 #from project6_zumo.bbcon import BBCON
 
 
@@ -85,7 +87,7 @@ class Behavior(ABC):
 class EdgeDetection(Behavior):
     """Edge detection, avoid falling of the table"""
 
-    def __init__(self, priority, sensors=list()):
+    def __init__(self, priority, sensors=[EdgeFinder()]):
         super().__init__(priority, sensors=sensors)
         self.motor_recommendation = (0, -1)
 
@@ -101,7 +103,7 @@ class EdgeDetection(Behavior):
         """the main interface between the bbcon and the behavior (detailed below)"""
         if self.match_deg > 0:
             self.match_deg -= 0.1
-        if not self.sensors[0].get_value():
+        if self.sensors[0].get_value() < 0.7:
             self.match_deg = 1
 
     def sense_and_act(self):
@@ -167,7 +169,7 @@ class EdgeDetection(Behavior):
 class RemoteControl(Behavior):
     """Interface for remote control"""
 
-    def __init__(self, priority, sensors=list()):
+    def __init__(self, priority, sensors=[sys.stdin]):
         super().__init__(priority, sensors=sensors)
         # Sensors is a UI, like iostream or arrow buttons stream
 
