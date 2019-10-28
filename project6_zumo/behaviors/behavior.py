@@ -82,6 +82,105 @@ class Behavior(ABC):
         to produce motor recommendations (and halt requests)"""
 
 
+class EdgeDetection(Behavior):
+    """Edge detection, avoid falling of the table"""
+
+    def __init__(self, controller, priority, sensors=list()):
+        super().__init__(controller, priority, sensors=sensors)
+
+    def consider_deactivation(self):
+        """whenever a behavior is active, it should test whether it should deactivate."""
+        #Skjønner ikke hva denne skal gjøre
+
+    def consider_activation(self):
+        """whenever a behavior is inactive, it should test whether it should activate."""
+        #Skjønner ikke hva denne skal gjøre
+
+    def update(self):
+        """the main interface between the bbcon and the behavior (detailed below)"""
+
+    def sense_and_act(self):
+        """the core computations performed by the behavior that use sensob readings
+        to produce motor recommendations (and halt requests)"""
+
+
+class FaceHunting(Behavior):
+
+    ROTATION_SPEED = 1
+    DRIVE_SPEED = 1
+
+    def __init__(self, controller: BBCON, priority: float, sensors=[]):
+        if sensors.length != 1:
+            raise ValueError("Only takes one sensob")
+        super().__init__(controller, priority, sensors=sensors)
+        self.image_width = sensors[0].sensors[0].img_width
+        self.image_height = sensors[0].sensors[0].img_height
+
+    def consider_deactivation(self):
+        """whenever a behavior is active, it should test whether it should deactivate."""
+        #Skjønner ikke hva denne skal gjøre
+        pass
+
+    def consider_activation(self):
+        """whenever a behavior is inactive, it should test whether it should activate."""
+        pass
+
+    def update(self):
+        if self.active:
+            self.consider_deactivation()
+            self.sense_and_act()
+        else:
+            self.consider_activation()
+
+    def sense_and_act(self):
+        faces = self.sensors[0].get_value[0]
+        largest = -1
+        relevant_face = -1
+        for i, (_, _, w, h) in enumerate(faces):
+            if w*h > largest:
+                largest = w*h
+                relevant_face = i
+        if relevant_face == -1:
+            self.match_deg = 0
+            self.motor_recomendation = (1, self.ROTATION_SPEED)
+            return
+
+        face_X = faces[relevant_face][0]
+        face_W = faces[relevant_face][2]
+        img_middle = self.image_width/2
+
+        if face_X + face_W * 0.6 <= img_middle:
+            self.motor_recomendation = (2, self.ROTATION_SPEED)
+        elif face_X + face_W * 0.4 >= img_middle:
+            self.motor_recomendation = (1, self.ROTATION_SPEED)
+        else:
+            self.motor_recomendation = (0, self.DRIVE_SPEED)
+
+        self.match_deg = 1
+
+
+class RemoteControl(Behavior):
+    """Interface for remote control"""
+
+    def __init__(self, controller, priority, sensors=list()):
+        super().__init__(controller, priority, sensors=sensors)
+        # Sensors is a UI, like iostream or arrow buttons stream
+
+    def consider_deactivation(self):
+        """whenever a behavior is active, it should test whether it should deactivate."""
+        #Skjønner ikke hva denne skal gjøre
+
+    def consider_activation(self):
+        """whenever a behavior is inactive, it should test whether it should activate."""
+        #Skjønner ikke hva denne skal gjøre
+
+    def update(self):
+        """the main interface between the bbcon and the behavior (detailed below)"""
+        instr = self.sensors[0].readline().split()
+
+    def sense_and_act(self):
+        """the core computations performed by the behavior that use sensob readings
+        to produce motor recommendations (and halt requests)"""
 """
 The call to update will initiate calls to these other methods, since an update will involve the
 following activities:
