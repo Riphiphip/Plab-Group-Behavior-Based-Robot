@@ -181,7 +181,9 @@ class RemoteControl(Behavior):
         """the main interface between the bbcon and the behavior (detailed below)"""
         instr = self.sensors[0].readline().split()
         self.motor_recommendation = (int(instr[0]), float(instr[1]))
+        print("Direction: {} \tSpeed: {}".format(self.motor_recommendation))
         self.match_deg = 1
+        return self.motor_recommendation
 
     def sense_and_act(self):
         """the core computations performed by the behavior that use sensob readings

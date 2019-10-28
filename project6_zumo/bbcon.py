@@ -29,7 +29,7 @@ should contain (at least) the following instance variables:"""
         self.arbitrator = arbitrator
         
 
-    def add_behavior(self, behavior, weight):
+    def add_behavior(self, behavior):
         """ append a newly-created behavior onto the behaviors list"""
         self.behaviors.append(behavior)
 
