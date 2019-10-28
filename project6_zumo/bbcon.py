@@ -5,10 +5,10 @@ Created on Thu Oct 24 08:25:08 2019
 @author: Joule
 """
 from time import sleep
-from project6_zumo.behaviors.behavior import Behavior
+from project6_zumo.behaviors import Behavior
 from project6_zumo.arbitrator import Arbitrator
 from project6_zumo.motob import Motob
-from project6_zumo.sensob import Sensob
+from project6_zumo.sensobs import Sensob
 
 """The highest-level class, BBCON (Behavior-Based Controller) should only require one instance (per
 robot). At each timestep, the robot should call its bbcon to determine its next move. A bbcon

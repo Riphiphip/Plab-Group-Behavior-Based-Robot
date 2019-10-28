@@ -4,7 +4,7 @@ Created on Thu Oct 24 09:05:15 2019
 """
 
 from abc import ABC, abstractmethod
-from project6_zumo.bbcon import BBCON
+#from project6_zumo.bbcon import BBCON
 
 
 class Behavior(ABC):
@@ -22,7 +22,7 @@ class Behavior(ABC):
     principle.
     """
 
-    def __init__(self, controller: BBCON, priority: float, sensors=list()):
+    def __init__(self, priority: float, sensors=list()):
         """
         The primary instance variables for a behavior object are the following:
         1. bbcon - pointer to the controller that uses this behavior.
@@ -51,7 +51,6 @@ class Behavior(ABC):
         where a behavior activates or deactives (based on sensory input) and needs to inform the
         bbcon (in order to be added or removed from bbcon.active behaviors).
         """
-        self.controller = controller
         self.sensors = sensors
         self.motor_recommendation = (0, 0)
         self.active = False
@@ -86,8 +85,8 @@ class Behavior(ABC):
 class EdgeDetection(Behavior):
     """Edge detection, avoid falling of the table"""
 
-    def __init__(self, controller: BBCON, priority, sensors=list()):
-        super().__init__(controller, priority, sensors=sensors)
+    def __init__(self, priority, sensors=list()):
+        super().__init__(priority, sensors=sensors)
 
     def consider_deactivation(self):
         """whenever a behavior is active, it should test whether it should deactivate."""
@@ -112,10 +111,10 @@ class FaceHunting(Behavior):
     ROTATION_SPEED = 1
     DRIVE_SPEED = 1
 
-    def __init__(self, controller: BBCON, priority: float, sensors=[]):
+    def __init__(self, priority: float, sensors=[]):
         if sensors.length != 1:
             raise ValueError("Only takes one sensob")
-        super().__init__(controller, priority, sensors=sensors)
+        super().__init__(priority, sensors=sensors)
         self.image_width = sensors[0].sensors[0].img_width
         self.image_height = sensors[0].sensors[0].img_height
 
@@ -164,10 +163,10 @@ class FaceHunting(Behavior):
 class RemoteControl(Behavior):
     """Interface for remote control"""
 
-    def __init__(self, controller: BBCON, priority, sensors=list()):
-        super().__init__(controller, priority, sensors=sensors)
+    def __init__(self, priority, sensors=list()):
+        super().__init__(priority, sensors=sensors)
         # Sensors is a UI, like iostream or arrow buttons stream
-    
+
     def __str__(self):
         return "RemoteControl Behavior"
 
@@ -184,7 +183,8 @@ class RemoteControl(Behavior):
         print("Reading input")
         instr = self.sensors[0].readline().split()
         self.motor_recommendation = (int(instr[0]), float(instr[1]))
-        print("Direction: {} \tSpeed: {}".format(self.motor_recommendation[0], self.motor_recommendation[1]))
+        print("Direction: {} \tSpeed: {}".format(
+            self.motor_recommendation[0], self.motor_recommendation[1]))
         self.match_deg = 1
         return self.motor_recommendation
 
@@ -192,6 +192,7 @@ class RemoteControl(Behavior):
         """the core computations performed by the behavior that use sensob readings
         to produce motor recommendations (and halt requests)"""
         return self.motor_recommendation
+
 
 """
 The call to update will initiate calls to these other methods, since an update will involve the
