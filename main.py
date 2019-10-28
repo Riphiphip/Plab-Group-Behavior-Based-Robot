@@ -12,6 +12,8 @@ def main():
     a = Arbitrator()
     controller = BBCON(a)
     a.add_behavior(RemoteControl(controller, 10, [sys.stdin]))
+    for c in controller.behaviors:
+        print(c)
     controller.motobs = [Motob(1)]
     while 1:
         controller.run_one_timestep()

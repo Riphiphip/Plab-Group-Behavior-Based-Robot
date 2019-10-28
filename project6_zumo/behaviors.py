@@ -167,6 +167,9 @@ class RemoteControl(Behavior):
     def __init__(self, controller: BBCON, priority, sensors=list()):
         super().__init__(controller, priority, sensors=sensors)
         # Sensors is a UI, like iostream or arrow buttons stream
+    
+    def __str__(self):
+        return "RemoteControl Behavior"
 
     def consider_deactivation(self):
         """whenever a behavior is active, it should test whether it should deactivate."""
@@ -178,6 +181,7 @@ class RemoteControl(Behavior):
 
     def update(self):
         """the main interface between the bbcon and the behavior (detailed below)"""
+        print("Reading input")
         instr = self.sensors[0].readline().split()
         self.motor_recommendation = (int(instr[0]), float(instr[1]))
         print("Direction: {} \tSpeed: {}".format(self.motor_recommendation))
