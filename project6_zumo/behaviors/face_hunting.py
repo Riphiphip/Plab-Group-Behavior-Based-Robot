@@ -48,18 +48,18 @@ class FaceHunting(Behavior):
                 relevant_face = i
         if relevant_face == -1:
             self.match_deg = 0
-            self.motor_recomendation = (1, self.ROTATION_SPEED)
+            self.motor_recommendation = (1, self.ROTATION_SPEED)
             return
 
-        face_X = faces[relevant_face][0]
-        face_W = faces[relevant_face][2]
+        face_x = faces[relevant_face][0]
+        face_w = faces[relevant_face][2]
         img_middle = self.image_width/2
 
-        if face_X + face_W * 0.6 <= img_middle:
-            self.motor_recomendation = (2, self.ROTATION_SPEED)
-        elif face_X + face_W * 0.4 >= img_middle:
-            self.motor_recomendation = (1, self.ROTATION_SPEED)
+        if face_x + face_w * 0.6 <= img_middle:
+            self.motor_recommendation = (2, self.ROTATION_SPEED)
+        elif face_x + face_w * 0.4 >= img_middle:
+            self.motor_recommendation = (1, self.ROTATION_SPEED)
         else:
-            self.motor_recomendation = (0, self.DRIVE_SPEED)
+            self.motor_recommendation = (0, self.DRIVE_SPEED)
 
         self.match_deg = 1
