@@ -13,6 +13,8 @@ class FaceFinder(Sensob):
         self.cascade = cv.CascadeClassifier(file_path)
 
     def update(self):
+        for camera in self.sensors:
+            camera.update()
         raw_output = [s.get_value() for s in self.sensors]
         self.prevData = self.preprocess(raw_output)
 
