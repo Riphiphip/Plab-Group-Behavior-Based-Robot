@@ -5,6 +5,7 @@ Created on Thu Oct 24 08:25:08 2019
 @author: Joule
 """
 from time import sleep
+from project6_zumo.arbitrator import Arbitrator
 
 """The highest-level class, BBCON (Behavior-Based Controller) should only require one instance (per
 robot). At each timestep, the robot should call its bbcon to determine its next move. A bbcon
@@ -25,7 +26,7 @@ should contain (at least) the following instance variables:"""
         self.active_behaviors = []
         self.sensobs = []
         self.motobs = []
-        self.arbitrator = arbitrator()
+        self.arbitrator = arbitrator
         
 
     def add_behavior(self, behavior, weight):
