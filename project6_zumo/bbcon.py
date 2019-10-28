@@ -5,7 +5,10 @@ Created on Thu Oct 24 08:25:08 2019
 @author: Joule
 """
 from time import sleep
+from project6_zumo.behaviors.behavior import Behavior
 from project6_zumo.arbitrator import Arbitrator
+from project6_zumo.motob import Motob
+from project6_zumo.sensob import Sensob
 
 """The highest-level class, BBCON (Behavior-Based Controller) should only require one instance (per
 robot). At each timestep, the robot should call its bbcon to determine its next move. A bbcon
@@ -70,13 +73,20 @@ should contain (at least) the following instance variables:"""
         way."""
         for sensob in self.sensobs:
             sensob.update() # Updates the sensob objects internal states
+        print("Updated sensor values")
         for behavior in self.behaviors:
             behavior.update() # Looks at the sensob objects internal state
+        print("Updated bahavvaviors")
         motor_recommendations, is_halting = self.arbitrator.choose_action()
+        print("Motor recom is: ", motor_recommendations)
+        print("is it halting: ", is_halting)
 
         if not is_halting:
             for motob in self.motobs:
+                print("this is motob: ", motob)
+                print("Im now going to update motobs")
                 motob.update(motor_recommendations)
+                print("Ii have updated, now i sleep")
                 sleep(0.05)
         for sensob in self.sensobs:
             sensob.reset()
