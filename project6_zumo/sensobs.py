@@ -9,6 +9,7 @@ Created on Thu Oct 24 08:33:57 2019
 # import cv2 as cv
 
 from abc import ABC, abstractmethod
+from project6_supply.sensors.irproximity_sensor import IRProximitySensor
 
 class Sensob(ABC):
     """A sensob serves as an interface between (one or more) sensors (of the agent) and the bbcon’s
@@ -21,10 +22,10 @@ class Sensob(ABC):
     The main instance variables of a sensob are a) its associated sensor(s) and b) its value."""
 
     """You will write code for sensobs, and that code will call the SWs. Each SW provides a very simple
-interface for sensobs, with just a few (standard) methods such as update and get value. Each SW
-does a small amount of preprocessing of the (completely) raw sensory data, but the information
-that each sensob receives (by calling a wrapper’s get value method) is also fairly basic, and open
-for many additional forms of preprocessing."""
+    interface for sensobs, with just a few (standard) methods such as update and get value. Each SW
+    does a small amount of preprocessing of the (completely) raw sensory data, but the information
+    that each sensob receives (by calling a wrapper’s get value method) is also fairly basic, and open
+    for many additional forms of preprocessing."""
 
     def __init__(self, sensors=[]):
         self.prevData = None
@@ -67,6 +68,8 @@ class EdgeFinder(Sensob):
     """
         Uses IR-sensors to look for edge
     """
+    def __init__(self, sensors=[IRProximitySensor()]):
+        super().__init__(sensors=sensors)
     def preprocess(self, sensor_data):
         output = []
         for sensor in sensor_data:
