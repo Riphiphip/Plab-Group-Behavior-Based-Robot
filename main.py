@@ -11,10 +11,14 @@ import sys
 def main():
     a = Arbitrator()
     controller = BBCON(a)
+    print("Created controller")
     a.add_behavior(RemoteControl(controller, 10, [sys.stdin]))
+    print("Added behaviors:")
     for c in controller.behaviors:
         print(c)
     controller.motobs = [Motob(1)]
+    print("Added motob")
+    print("Running loop")
     while 1:
         controller.run_one_timestep()
 
