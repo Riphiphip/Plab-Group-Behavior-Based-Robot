@@ -48,8 +48,11 @@ values should come directly from the winning behavior."""
         cummulative_weight_list = [0]
         for behavior in self.behaviors:
             cummulative_weight_list.append(
-                cummulative_weight_list[-1] + behavior.get_weight())
+                cummulative_weight_list[-1] + behavior.get_weight()
+                )
         choice = random.randint(0, cummulative_weight_list[-1])
+        print("Weights:", cummulative_weight_list)
+        print("Choice", choice)
         i = 0
         while cummulative_weight_list[i] < choice:
             i += 1

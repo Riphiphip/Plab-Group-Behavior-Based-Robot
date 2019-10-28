@@ -6,6 +6,13 @@ Created on Thu Oct 24 08:59:35 2019
 """
 
 from project6_supply.motors import Motors
+#class Motors():
+#    """dummy"""
+#    def __init__(self, *args, **kwargs):
+#        super().__init__(*args, **kwargs)
+#    
+#    def set_value(self, rec, dur=1):
+#        print(rec)
 
 class Motob:
     """The motor object (motob) manifests an interface between a behavior and one or more motors
