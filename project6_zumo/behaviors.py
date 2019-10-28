@@ -130,6 +130,7 @@ class FaceHunting(Behavior):
     def update(self):
         if self.active:
             self.consider_deactivation()
+            self.sensors[0].update()
             self.sense_and_act()
         else:
             self.consider_activation()
