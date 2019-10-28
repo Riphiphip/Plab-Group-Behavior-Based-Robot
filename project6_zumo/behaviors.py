@@ -177,10 +177,14 @@ class RemoteControl(Behavior):
     def update(self):
         """the main interface between the bbcon and the behavior (detailed below)"""
         instr = self.sensors[0].readline().split()
+        self.motor_recommendation = (int(instr[0]), float(instr[1]))
+        self.match_deg = 1
 
     def sense_and_act(self):
         """the core computations performed by the behavior that use sensob readings
         to produce motor recommendations (and halt requests)"""
+        return self.motor_recommendation
+
 """
 The call to update will initiate calls to these other methods, since an update will involve the
 following activities:
