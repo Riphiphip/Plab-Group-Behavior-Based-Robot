@@ -10,6 +10,7 @@ Created on Thu Oct 24 08:33:57 2019
 
 from abc import ABC, abstractmethod
 
+
 class Sensob(ABC):
     """A sensob serves as an interface between (one or more) sensors (of the agent) and the bbcon’s
     behaviors. Note that a single sensor may be shared by
@@ -67,9 +68,9 @@ class EdgeFinder(Sensob):
     """
         Uses IR-sensors to look for edge
     """
+
     def preprocess(self, sensor_data):
         output = []
         for sensor in sensor_data:
-            output.append(False in sensor)
+            output = min(sensor)
         return output
-            
