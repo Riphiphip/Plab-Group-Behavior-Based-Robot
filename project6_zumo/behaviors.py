@@ -87,6 +87,7 @@ class EdgeDetection(Behavior):
 
     def __init__(self, priority, sensors=list()):
         super().__init__(priority, sensors=sensors)
+        self.motor_recommendation = (0, -1)
 
     def consider_deactivation(self):
         """whenever a behavior is active, it should test whether it should deactivate."""
@@ -98,6 +99,10 @@ class EdgeDetection(Behavior):
 
     def update(self):
         """the main interface between the bbcon and the behavior (detailed below)"""
+        if self.match_deg > 0:
+            self.match_deg -= 0.1
+        if not self.sensors[0].get_value():
+            self.match_deg = 1
 
     def sense_and_act(self):
         """the core computations performed by the behavior that use sensob readings
