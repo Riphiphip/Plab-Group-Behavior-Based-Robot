@@ -31,7 +31,7 @@ class Sensob(ABC):
     for many additional forms of preprocessing."""
 
     def __init__(self, sensors=[]):
-        self.prevData = 1
+        self.prev_data = 1
         self.sensors = sensors
 
     def update(self):
@@ -39,33 +39,11 @@ class Sensob(ABC):
         self.prevData = self.preprocess(raw_output)
 
     def get_value(self):
-        return self.prevData
+        return self.prev_data
 
     @abstractmethod
     def preprocess(self, sensor_data):
         '''Preprocessing of raw data'''
-
-
-# class FaceFinder(Sensob):
-
-#     def __init__(self, sensors=[]):
-#         super().__init__(sensors=sensors)
-#         file_path = "resources/haarcascade_frontalface_default.xml"
-#         self.cascade = cv.CascadeClassifier(file_path)
-
-
-#     def preprocess(self, sensor_data):
-#         output = []
-#         for image in sensor_data:
-#             current_camera = []
-#             cv_image = np.array(image)
-#             cv_image = cv.cvtColor(cv_image, cv.COLOR_RGB2GRAY)
-#             faces = self.cascade.detectMultiScale(cv_image, 1.1, 4)
-#             for (x, y, w, h) in faces:
-#                 current_camera.append([x,y,w,h])
-#             output.append(current_camera)
-#         return output
-
 
 class EdgeFinder(Sensob):
     """
@@ -80,7 +58,7 @@ class EdgeFinder(Sensob):
 
     def update(self):
         raw_output = self.sensors[0].update()
-        self.prevData = raw_output
+        self.prev_data = self.preprocess(raw_output)
         return self.get_value()
 
 
@@ -93,18 +71,20 @@ class ColorFinder(Sensob):
     Value: [left avg. color, middle avg. color, right avg.color]
     '''
 
-    def __init__(self, sensors=[], color=0):
+    def __init__(self, sensors=[]):
         super().__init__(sensors=sensors)
-        self.color = color
 
     def preprocess(self, sensor_data: Image.Image):
-        seg_width = (int)(math.floor(sensor_data.width/3))
-        partitions = []
-        for i in range(3):
-            partitions.append(sensor_data.crop(box=(i*seg_width+1, 0, (i+1)*seg_width, sensor_data.height-1)))
-            print((i*seg_width+1, 0, (i+1)*seg_width, sensor_data.height-1))
-        for i, img in enumerate(partitions):
-            partitions[i] = img.resize((1, 1)).getpixel(1, 1)[self.color]
-        return partitions
+        output = []
+        for image in sensor_data:
+            seg_width = (int)(math.floor(image.width/3))
+            partitions = []
+            for i in range(3):
+                partitions.append(image.crop(box=(i*seg_width+1, 0, (i+1)*seg_width, image.height-1)))
+                print((i*seg_width+1, 0, (i+1)*seg_width, image.height-1))
+            for i, img in enumerate(partitions):
+                partitions[i] = img.resize((1, 1)).getpixel(1, 1)
+            output.append(partitions)
+        return output
         
         

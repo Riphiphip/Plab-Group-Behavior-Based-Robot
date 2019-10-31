@@ -84,6 +84,46 @@ class Behavior(ABC):
         """the core computations performed by the behavior that use sensob readings
         to produce motor recommendations (and halt requests)"""
 
+class ColorChasing(Behavior):
+    """Chase a color"""
+
+    def __init__(self, priority, sensors=[], color=0):
+        super().__init__(priority, sensors=sensors)
+        self.color = color
+
+    def consider_activation(self):
+        pass
+    
+    def consider_deactivation(self):
+        pass
+    
+    def sense_and_act(self):
+        abs_max = 255
+        threshold = 210
+        max_val = threshold
+        max_dir = -1
+        for i, direction in enumerate(self.sensors[0].get_value()[0]):
+            if direction > max_val:
+                max_val = direction
+                max_dir = i
+        self.match_deg = 1-((abs_max-max_val)/(abs_max-threshold))
+        if max_dir == 0:
+            self.motor_recommendation = (-1, 0.2)
+        elif max_dir == 1:
+            self.motor_recommendation = (0, 0.2)
+        elif max_dir == 2:
+            self.motor_recommendation = (1, 0.2)
+        else:
+            self.motor_recommendation = (random.randint(-1, 1), 0)
+    
+    def update(self):
+        if self.active:
+            self.sense_and_act()
+            self.consider_deactivation()
+        else:
+            self.consider_activation()
+
+
 
 class EdgeDetection(Behavior):
     """Edge detection, avoid falling of the table"""
