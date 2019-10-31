@@ -45,6 +45,8 @@ of stochasticity. 4
 2. a boolean indicating whether or not the run should be halted.
 In the cases of the simple deterministic and the stochastic arbitration strategies, both of these
 values should come directly from the winning behavior."""
+        
+        """
         cummulative_weight_list = [0]
         for behavior in self.behaviors:
             cummulative_weight_list.append(
@@ -58,3 +60,12 @@ values should come directly from the winning behavior."""
             i += 1
         # i-1 since the first entry in cummulative_weight_list is 0, and the 0th behavior's weight is in the 1st position
         return (self.behaviors[i-1].motor_recommendation, self.behaviors[i-1].halt_rec)
+        """
+        behavior_weights = []
+        for behavior in self.behaviors:
+            behavior_weights.append(behavior.get_weight())
+        max_index = 0
+        for i in range(len(behavior_weights)):
+            if behavior_weights[i] == max(behavior_weights):
+                max_index = i
+        return (self.behaviors[i].motor_recommendation, self.behaviors[i].halt_rec)
