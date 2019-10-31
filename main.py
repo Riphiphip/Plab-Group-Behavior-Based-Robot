@@ -14,10 +14,10 @@ def main():
     a = Arbitrator()
     controller = BBCON(a)
     print("Created controller")
-    controller.add_behavior(RemoteControl(10))
+    #controller.add_behavior(RemoteControl(10))
     controller.add_behavior(EdgeDetection(100))
     controller.activate_behavior(controller.behaviors[0])
-    controller.activate_behavior(controller.behaviors[1])
+    #controller.activate_behavior(controller.behaviors[1])
     print("Added behaviors:")
     for c in a.behaviors:
         print(c)
