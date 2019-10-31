@@ -55,6 +55,9 @@ class EdgeFinder(Sensob):
 
     def __init__(self, sensors=[ReflectanceSensors(False, 400, 3000)]):
         super().__init__(sensors=sensors)
+    
+    def __str__(self):
+        return "EdgeFinder"
 
     def preprocess(self, sensor_data):
         return sensor_data
@@ -63,7 +66,7 @@ class EdgeFinder(Sensob):
         raw_output = self.sensors[0].update()
         print("IR sensors returns", raw_output)
         self.data = self.preprocess(raw_output)
-        return self.get_value()
+        return self.data
 
 
 class ColorFinder(Sensob):
@@ -126,6 +129,9 @@ class Collition(Sensob):
         super().__init__(sensors=sensors)
         # Set data to very high value
         self.data = 1500
+
+    def __str__(self):
+        return "Collition"
 
     def preprocess(self, sensor_data):
         return sensor_data
