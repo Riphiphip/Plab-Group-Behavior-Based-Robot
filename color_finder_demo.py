@@ -1,3 +1,5 @@
+from time import sleep
+
 from project6_zumo.sensobs import ColorFinder
 from project6_supply.sensors.camera import Camera
 
@@ -9,5 +11,6 @@ if __name__ == "__main__":
     try:
         while True:
             main(c)
+            sleep(0.5)
     except KeyboardInterrupt:
         pass
