@@ -95,7 +95,6 @@ class ColorFinder(Sensob):
 
     def __init__(self, sensors=[]):
         super().__init__(sensors=sensors)
-        self.color = color
 
     def preprocess(self, sensor_data: Image.Image):
         seg_width = (int)(math.floor(sensor_data.width/3))
