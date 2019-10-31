@@ -27,7 +27,7 @@ from project6_zumo.behaviors import RemoteControl, EdgeDetection, Idle
 from project6_supply.sensors.zumo_button import ZumoButton
 
 import sys
-
+import threading
 
 def main():
     btn = ZumoButton()
@@ -46,6 +46,13 @@ def main():
     controller.motobs = [Motob(None)]
     print("Added motob")
     print("Running loop")
+    
+    def btn():
+        btn.wait_for_press()
+        quit()
+    
+    t = threading.Thread(None, btn)
+    t.start()
     while 1:
         controller.run_one_timestep()
 
