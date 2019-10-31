@@ -47,11 +47,11 @@ def main():
     print("Added motob")
     print("Running loop")
     
-    def btn():
+    def stopper():
         btn.wait_for_press()
         quit()
     
-    t = threading.Thread(None, btn)
+    t = threading.Thread(None, stopper)
     t.start()
     while 1:
         controller.run_one_timestep()
