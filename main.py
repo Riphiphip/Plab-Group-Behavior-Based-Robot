@@ -23,7 +23,7 @@ def main():
     print("Added behaviors:")
     for c in a.behaviors:
         print(c)
-    controller.motobs = [Motob(1)]
+    controller.motobs = [Motob(0.05)]
     print("Added motob")
     print("Running loop")
     while 1:

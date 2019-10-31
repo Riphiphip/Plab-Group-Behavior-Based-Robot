@@ -115,10 +115,9 @@ class EdgeDetection(Behavior):
             self.match_deg -= 0.2
             if self.match_deg < 0:
                 self.match_deg = 0
-        if vals[0] < 0.6:
+        if min(vals) < 0.6:
             self.match_deg = 1
-        elif vals[1] < 0.6:
-            self.match_deg = 1    
+  
         
 
     def sense_and_act(self):
@@ -182,7 +181,7 @@ class Idle(Behavior):
     def update(self):
         """Return a random rotation and speed"""
         if not self.countdown:
-            self.motor_recommendation = (random.randint(-1, 1), random.randint(0, 10) / 100)
+            self.motor_recommendation = (random.randint(-1, 1), random.randint(1, 2) / 10)
             self.countdown = self.load
         else:
             self.countdown -= 1
