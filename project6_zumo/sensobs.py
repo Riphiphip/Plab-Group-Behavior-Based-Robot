@@ -107,7 +107,7 @@ class ColorFinder(Sensob):
         '''Estimates color of object in front of camera to be used for reference'''
         ref_img = (self.sensors[0].update())
         l_thresh = (int)(math.floor(ref_img.width/3))
-        r_thresh = (int)(math.floor(ref_img.height/3))
+        r_thresh = 2*l_thresh
         ref_img = ref_img.resize((1, 1), box=(l_thresh, 0, r_thresh, ref_img.height-1))
         self.color = ref_img.getpixel((0, 0))
         print("Kalibrert farge: " + str(self.color))     
