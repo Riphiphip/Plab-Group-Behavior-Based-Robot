@@ -72,7 +72,7 @@ class EdgeFinder(Sensob):
         Uses Reflectance-sensors to look for edge
     """
 
-    def __init__(self, sensors=[ReflectanceSensors(auto_calibrate=True)]):
+    def __init__(self, sensors=[ReflectanceSensors(ReflectanceSensors(False, 400, 3000))]):
         super().__init__(sensors=sensors)
 
     def preprocess(self, sensor_data):
@@ -80,7 +80,7 @@ class EdgeFinder(Sensob):
 
     def update(self):
         raw_output = self.sensors[0].update()
-        self.prevData = self.preprocess(raw_output)
+        self.prevData = raw_output
         return self.get_value()
 
 

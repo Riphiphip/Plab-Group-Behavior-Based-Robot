@@ -115,8 +115,10 @@ class EdgeDetection(Behavior):
             self.match_deg -= 0.2
             if self.match_deg < 0:
                 self.match_deg = 0
-        if vals < 4.5:
+        if vals[0] < 0.6:
             self.match_deg = 1
+        elif vals[1] < 0.6:
+            self.match_deg = 1    
         
 
     def sense_and_act(self):
