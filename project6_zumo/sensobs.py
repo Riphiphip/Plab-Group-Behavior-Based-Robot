@@ -61,6 +61,7 @@ class EdgeFinder(Sensob):
 
     def update(self):
         raw_output = self.sensors[0].update()
+        print("IR sensors returns", raw_output)
         self.data = self.preprocess(raw_output)
         return self.get_value()
 
