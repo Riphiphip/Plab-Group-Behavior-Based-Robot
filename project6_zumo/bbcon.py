@@ -3,6 +3,10 @@
 Created on Thu Oct 24 08:25:08 2019
 
 @author: Joule
+
+The highest-level class, BBCON (Behavior-Based Controller) should only require one instance (per
+robot). At each timestep, the robot should call its bbcon to determine its next move. A bbcon
+should contain (at least) the following instance variables:
 """
 from time import sleep
 #from project6_zumo.behaviors import Behavior
@@ -10,9 +14,6 @@ from project6_zumo.arbitrator import Arbitrator
 from project6_zumo.motob import Motob
 from project6_zumo.sensobs import Sensob
 
-"""The highest-level class, BBCON (Behavior-Based Controller) should only require one instance (per
-robot). At each timestep, the robot should call its bbcon to determine its next move. A bbcon
-should contain (at least) the following instance variables:"""
 
 class BBCON:
     """The highest-level class, BBCON (Behavior-Based Controller) should only require one instance (per
@@ -95,5 +96,6 @@ should contain (at least) the following instance variables:"""
                 motob.update(motor_recommendations)
                 print("Ii have updated, now i sleep")
                 sleep(0.05)
-        for sensob in self.sensobs:
-            sensob.reset()
+        # .reset() should be implemented or not used at all
+        #for sensob in self.sensobs:
+        #    sensob.reset()
