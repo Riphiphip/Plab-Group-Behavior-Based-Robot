@@ -152,11 +152,12 @@ class EdgeDetection(Behavior):
         print("My sensor are tingling, they say total light is:",vals)
 
         if self.match_deg > 0:
-            self.match_deg -= 0.2
+            self.match_deg -= 0.01
             if self.match_deg < 0:
                 self.match_deg = 0
-        if vals < 4.5:
+        if min(vals) < 0.6:
             self.match_deg = 1
+  
         
 
     def sense_and_act(self):
@@ -209,6 +210,7 @@ class Idle(Behavior):
         super().__init__(priority, sensors=sensors)
         self.load = load
         self.countdown = 0
+        self.motor_recommendation = (0, 0)
 
     def consider_activation(self):
         pass
@@ -219,10 +221,15 @@ class Idle(Behavior):
     def update(self):
         """Return a random rotation and speed"""
         if not self.countdown:
-            self.motor_recommendation = (random.randint(-1, 1), random.randint(0, 50) / 100)
+            self.motor_recommendation = (random.randint(-1, 1), random.randint(1, 2) / 10)
             self.countdown = self.load
         else:
             self.countdown -= 1
+    
+    def sense_and_act(self):
+        """the core computations performed by the behavior that use sensob readings
+        to produce motor recommendations (and halt requests)"""
+        return self.motor_recommendation
 
 """
 The call to update will initiate calls to these other methods, since an update will involve the
