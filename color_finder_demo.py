@@ -10,7 +10,7 @@ def main(c: ColorFinder, cam: Camera):
 
 if __name__ == "__main__":
     cam = Camera()
-    c = ColorFinder(sensors=[c])
+    c = ColorFinder(sensors=[cam])
     try:
         while True:
             main(c)
