@@ -89,7 +89,7 @@ class ColorFinder(Sensob):
         seg_width = (int)(math.floor(width/self.seg_number))
         partitions = []
         for i in range(self.seg_number):
-            partitions.append(sensor_data.crop(box=(i*seg_width+1, 0, (i+1)*seg_width, sensor_data.height-1)))
+            partitions.append(sensor_data.crop(box=(i*seg_width, 0, (i+1)*seg_width, sensor_data.height-1)))
         for i, part in enumerate(partitions):
             valid_count = 0
             pixel_count = seg_width * height
@@ -105,6 +105,7 @@ class ColorFinder(Sensob):
         output = []
         for camera in self.sensors:
             output.append(self.preprocess(camera.get_value()))
+        self.data = output
         return output
 
     def calibrate(self):
