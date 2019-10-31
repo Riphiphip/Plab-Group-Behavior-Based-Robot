@@ -6,7 +6,7 @@ import sys
 import random
 
 from abc import ABC, abstractmethod
-from project6_zumo.sensobs import EdgeFinder, ColorFinder
+from project6_zumo.sensobs import EdgeFinder, ColorFinder, Collition
 from project6_supply.sensors.zumo_button import ZumoButton
 #from project6_zumo.bbcon import BBCON
 
@@ -89,9 +89,10 @@ class Behavior(ABC):
 class ColorChasing(Behavior):
     """Chase a color"""
 
-    def __init__(self, priority, sensors=[ColorFinder, ]):
+    def __init__(self, priority, sensors=[ColorFinder(), Collition()]):
         super().__init__(priority, sensors=sensors)
-        self.color = color
+        self.camera = sensors[0]
+        self.collition = sensors[1]
 
     def consider_activation(self):
         pass
@@ -100,6 +101,9 @@ class ColorChasing(Behavior):
         pass
     
     def sense_and_act(self):
+        """ camera.get_value() returns [float, float, float]
+        percentage of targeted color in left, middle and right
+        """
         abs_max = 255
         threshold = 210
         max_val = threshold
@@ -213,7 +217,6 @@ class Idle(Behavior):
         self.load = load
         self.maxmin = maxmin
         self.countdown = 0
-        self.motor_recommendation = (0, 0)
 
     def consider_activation(self):
         pass
@@ -235,21 +238,6 @@ class Idle(Behavior):
         return self.motor_recommendation
 
 
-class Chaser(Behavior):
-    """Behavior to stop"""
-
-    def __init__(self, priority, color, sensors=list()):
-        super().__init__(priority, sensors=sensors)
-        self.motor_recommendation
-        self.target_color = color
-        self.camera = sensors[0]
-        self.collition = sensors[2]
-
-    def update(self):
-        self.sense_and_act()
-
-    def sense_and_act(self):
-        if self.camera.get_value() 
 """
 The call to update will initiate calls to these other methods, since an update will involve the
 following activities:
