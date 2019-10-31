@@ -169,6 +169,7 @@ class Idle(Behavior):
         super().__init__(priority, sensors=sensors)
         self.load = load
         self.countdown = 0
+        self.motor_recommendation = (0, 0)
 
     def consider_activation(self):
         pass
@@ -179,10 +180,15 @@ class Idle(Behavior):
     def update(self):
         """Return a random rotation and speed"""
         if not self.countdown:
-            self.motor_recommendation = (random.randint(-1, 1), random.randint(0, 50) / 100)
+            self.motor_recommendation = (random.randint(-1, 1), random.randint(0, 10) / 100)
             self.countdown = self.load
         else:
             self.countdown -= 1
+    
+    def sense_and_act(self):
+        """the core computations performed by the behavior that use sensob readings
+        to produce motor recommendations (and halt requests)"""
+        return self.motor_recommendation
 
 """
 The call to update will initiate calls to these other methods, since an update will involve the
