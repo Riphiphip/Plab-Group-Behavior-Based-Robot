@@ -69,17 +69,20 @@ class Sensob(ABC):
 
 class EdgeFinder(Sensob):
     """
-        Uses IR-sensors to look for edge
+        Uses Reflectance-sensors to look for edge
     """
 
     def __init__(self, sensors=[ReflectanceSensors(auto_calibrate=True)]):
         super().__init__(sensors=sensors)
 
     def preprocess(self, sensor_data):
-        output = []
-        for sensor in sensor_data:
-            output = min(sensor)
-        return output
+        return sum(sensor_data)
+
+    def update(self):
+        raw_output = self.sensors[0].update()
+        self.prevData = self.preprocess(raw_output)
+        return self.get_value()
+
 
 
 class ColorFinder(Sensob):
@@ -103,4 +106,5 @@ class ColorFinder(Sensob):
         for i, img in enumerate(partitions):
             partitions[i] = img.resize((1, 1)).getpixel(1, 1)[self.color]
         return partitions
+        
         

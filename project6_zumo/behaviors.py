@@ -3,6 +3,7 @@
 Created on Thu Oct 24 09:05:15 2019
 """
 import sys
+import random
 
 from abc import ABC, abstractmethod
 from project6_zumo.sensobs import EdgeFinder
@@ -89,7 +90,7 @@ class EdgeDetection(Behavior):
 
     def __init__(self, priority, sensors=[EdgeFinder()]):
         super().__init__(priority, sensors=sensors)
-        self.motor_recommendation = (0, -1)
+        self.motor_recommendation = (0, -0.4)
 
     def consider_deactivation(self):
         """whenever a behavior is active, it should test whether it should deactivate."""
@@ -101,70 +102,31 @@ class EdgeDetection(Behavior):
 
     def update(self):
         """the main interface between the bbcon and the behavior (detailed below)"""
+        """
         if self.match_deg > 0:
             self.match_deg -= 0.1
         if self.sensors[0].get_value() < 0.7:
             self.match_deg = 1
+        """
+        vals = self.sensors[0].update()
+        print("My sensor are tingling, they say total light is:",vals)
+
+        if self.match_deg > 0:
+            self.match_deg -= 0.2
+            if self.match_deg < 0:
+                self.match_deg = 0
+        if vals < 4.5:
+            self.match_deg = 1
+        
 
     def sense_and_act(self):
         """the core computations performed by the behavior that use sensob readings
         to produce motor recommendations (and halt requests)"""
+        return self.motor_recommendation
+    
+    def __str__(self):
+        return "EdgeDetection Behavior"
 
-
-# class FaceHunting(Behavior):
-#     '''Looks at last camera picture and determines whether there is
-#         a face or not. Attempts to follow the face if found'''
-
-#     ROTATION_SPEED = 1
-#     DRIVE_SPEED = 1
-
-#     def __init__(self, priority: float, sensors=[]):
-#         if sensors.length != 1:
-#             raise ValueError("Only takes one sensob")
-#         super().__init__(priority, sensors=sensors)
-#         self.image_width = sensors[0].sensors[0].img_width
-#         self.image_height = sensors[0].sensors[0].img_height
-
-#     def consider_deactivation(self):
-#         """whenever a behavior is active, it should test whether it should deactivate."""
-#         # Skjønner ikke hva denne skal gjøre
-
-#     def consider_activation(self):
-#         """whenever a behavior is inactive, it should test whether it should activate."""
-#         # Skjønner ikke hva denne skal gjøre
-
-#     def update(self):
-#         if self.active:
-#             self.consider_deactivation()
-#             self.sense_and_act()
-#         else:
-#             self.consider_activation()
-
-#     def sense_and_act(self):
-#         faces = self.sensors[0].get_value[0]
-#         largest = -1
-#         relevant_face = -1
-#         for i, (_, _, w, h) in enumerate(faces):
-#             if w*h > largest:
-#                 largest = w*h
-#                 relevant_face = i
-#         if relevant_face == -1:
-#             self.match_deg = 0
-#             self.motor_recommendation = (1, self.ROTATION_SPEED)
-#             return
-
-#         face_x = faces[relevant_face][0]
-#         face_w = faces[relevant_face][2]
-#         img_middle = self.image_width/2
-
-#         if face_x + face_w * 0.6 <= img_middle:
-#             self.motor_recommendation = (2, self.ROTATION_SPEED)
-#         elif face_x + face_w * 0.4 >= img_middle:
-#             self.motor_recommendation = (1, self.ROTATION_SPEED)
-#         else:
-#             self.motor_recommendation = (0, self.DRIVE_SPEED)
-
-#         self.match_deg = 1
 
 class RemoteControl(Behavior):
     """Interface for remote control"""
@@ -199,6 +161,28 @@ class RemoteControl(Behavior):
         to produce motor recommendations (and halt requests)"""
         return self.motor_recommendation
 
+
+class Idle(Behavior):
+    """Idle wandering"""
+
+    def __init__(self, priority, load=5, sensors=list()):
+        super().__init__(priority, sensors=sensors)
+        self.load = load
+        self.countdown = 0
+
+    def consider_activation(self):
+        pass
+
+    def consider_deactivation(self):
+        pass
+
+    def update(self):
+        """Return a random rotation and speed"""
+        if not self.countdown:
+            self.motor_recommendation = (random.randint(-1, 1), random.randint(0, 50) / 100)
+            self.countdown = self.load
+        else:
+            self.countdown -= 1
 
 """
 The call to update will initiate calls to these other methods, since an update will involve the
