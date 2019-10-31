@@ -37,7 +37,7 @@ class Sensob(ABC):
 
     def update(self):
         raw_output = [s.get_value() for s in self.sensors]
-        self.prevData = self.preprocess(raw_output)
+        self.data = self.preprocess(raw_output)
 
     def get_value(self):
         return self.data
