@@ -95,7 +95,7 @@ should contain (at least) the following instance variables:"""
                 print("Im now going to update motobs")
                 motob.update(motor_recommendations)
                 print("Ii have updated, now i sleep")
-                sleep(0.3)
+                sleep(0.05)
         # .reset() should be implemented or not used at all
         #for sensob in self.sensobs:
         #    sensob.reset()
