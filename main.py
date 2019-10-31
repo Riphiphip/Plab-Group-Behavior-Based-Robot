@@ -26,12 +26,17 @@ from project6_zumo.arbitrator import Arbitrator
 from project6_zumo.motob import Motob
 from project6_zumo.behaviors import RemoteControl, EdgeDetection, Idle
 from project6_supply.sensors.zumo_button import ZumoButton
-
+from project6_supply.sensors.motors import Motor
+import wiringpi as wp
 
 import sys
-import threading
+
 
 def main():
+    wp.wiringPiSetupGpio()
+    m = Motor()
+    m.forward(0.2,0.2)
+
     btn = ZumoButton()
     btn.wait_for_press()
     a = Arbitrator()
