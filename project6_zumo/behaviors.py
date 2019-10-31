@@ -110,6 +110,14 @@ class EdgeDetection(Behavior):
         vals = self.sensors[0].update()
         print("My sensor are tingling, they say total light is:",vals)
 
+        if self.match_deg > 0:
+            self.match_deg -= 0.2
+            if self.match_deg < 0:
+                self.match_deg = 0
+        if vals < 4.5:
+            self.match_deg = 1
+        
+
     def sense_and_act(self):
         """the core computations performed by the behavior that use sensob readings
         to produce motor recommendations (and halt requests)"""
