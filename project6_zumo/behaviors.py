@@ -228,6 +228,7 @@ class Idle(Behavior):
         self.load = load
         self.maxmin = maxmin
         self.countdown = 0
+        self.match_deg = 1
 
     def consider_activation(self):
         pass

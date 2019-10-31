@@ -125,7 +125,7 @@ class ColorFinder(Sensob):
                            int(int(self.imager.xmax)/3)*(side+1)):
                 for y in range(int(self.imager.ymax)):
                     r, g, b = self.imager.get_pixel(x, y)
-                    if r < 100 and g > 140 and b < 120:
+                    if g-r > 40 and g-b > 40:
                         green_pixels += 1
             list_sides[side] = green_pixels / total_pixels
         self.data = list_sides
