@@ -74,7 +74,9 @@ class EdgeFinder(Sensob):
         super().__init__(sensors=sensors)
 
     def preprocess(self, sensor_data):
-        output = []
-        for sensor in sensor_data:
-            output = min(sensor)
-        return output
+        return sum(sensor_data)
+    
+    def update(self):
+        raw_output = self.sensors[0].update()
+        self.prevData = self.preprocess(raw_output)
+        self.get_value()

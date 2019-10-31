@@ -108,7 +108,7 @@ class EdgeDetection(Behavior):
             self.match_deg = 1
         """
         vals = self.sensors[0].update()
-        print("My sensor are tingling, they say total light is:",sum(vals))
+        print("My sensor are tingling, they say total light is:",vals)
 
     def sense_and_act(self):
         """the core computations performed by the behavior that use sensob readings
