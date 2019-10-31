@@ -45,6 +45,7 @@ class Sensob(ABC):
     def preprocess(self, sensor_data):
         '''Preprocessing of raw data'''
 
+
 class EdgeFinder(Sensob):
     """
         Uses Reflectance-sensors to look for edge
@@ -62,7 +63,6 @@ class EdgeFinder(Sensob):
         return self.get_value()
 
 
-
 class ColorFinder(Sensob):
     '''
     Looks for color R, G or B in image and determines if
@@ -71,20 +71,42 @@ class ColorFinder(Sensob):
     Value: [left avg. color, middle avg. color, right avg.color]
     '''
 
-    def __init__(self, sensors=[]):
+    def __init__(self, sensors=[], color=None, threshold=5, seg_number=3):
         super().__init__(sensors=sensors)
+        self.threshold = threshold
+        self.seg_number = seg_number
+        if color:
+            self.color = color
+        else:
+            self.calibrate()
 
     def preprocess(self, sensor_data: Image.Image):
+        '''Gives a percentage of pixels of an image classified as self.color'''
         output = []
         for image in sensor_data:
-            seg_width = (int)(math.floor(image.width/3))
+            width = image.width
+            height = image.height
+            seg_width = (int)(math.floor(width/self.seg_number))
             partitions = []
-            for i in range(3):
+            for i in range(self.seg_number):
                 partitions.append(image.crop(box=(i*seg_width+1, 0, (i+1)*seg_width, image.height-1)))
-                print((i*seg_width+1, 0, (i+1)*seg_width, image.height-1))
-            for i, img in enumerate(partitions):
-                partitions[i] = img.resize((1, 1)).getpixel(1, 1)
+            for i, part in enumerate(partitions):
+                valid_count = 0
+                pixel_count = seg_width * height
+                for x in range(seg_width):
+                    for y in range(height):
+                        for c, channel in enumerate(part.getpixel((x, y))):
+                            if channel in range(self.color[c]-self.threshold, self.color[c] + self.threshold+1):
+                                valid_count += 1
+                partitions[i] = valid_count/pixel_count
             output.append(partitions)
         return output
-        
-        
+
+    def calibrate(self):
+        '''Estimates color of object in front of camera to be used for reference'''
+        ref_img = (self.sensors[0].update())
+        l_thresh = (int)(math.floor(ref_img.width/3))
+        r_thresh = (int)(math.floor(ref_img.height/3))
+        ref_img = ref_img.resize((1, 1), box=(l_thresh, 0, r_thresh, ref_img.height-1))
+        self.color = ref_img.getpixel((0, 0))
+        print("Kalibrert farge: " + str(self.color))
