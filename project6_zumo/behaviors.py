@@ -168,7 +168,7 @@ class EdgeDetection(Behavior):
         print("My sensor are tingling, they say total light is:", vals)
 
         if self.match_deg > 0:
-            self.match_deg -= 0.15
+            self.match_deg -= 1   #0.15
             if self.match_deg < 0:
                 self.match_deg = 0
                 print("Done backing")
