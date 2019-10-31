@@ -13,7 +13,7 @@ if __name__ == "__main__":
     c = ColorFinder(sensors=[cam])
     try:
         while True:
-            main(c)
+            main(c, cam)
             sleep(0.5)
     except KeyboardInterrupt:
         pass
