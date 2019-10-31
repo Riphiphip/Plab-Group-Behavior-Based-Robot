@@ -121,6 +121,7 @@ class EdgeDetection(Behavior):
     def sense_and_act(self):
         """the core computations performed by the behavior that use sensob readings
         to produce motor recommendations (and halt requests)"""
+        return self.motor_recommendation
     
     def __str__(self):
         return "EdgeDetection Behavior"
