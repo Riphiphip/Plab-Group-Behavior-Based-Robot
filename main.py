@@ -26,7 +26,7 @@ from project6_zumo.arbitrator import Arbitrator
 from project6_zumo.motob import Motob
 from project6_zumo.behaviors import RemoteControl, EdgeDetection, Idle, ColorChasing
 from project6_supply.sensors.zumo_button import ZumoButton
-from project6_supply.sensors.motors import Motor
+from project6_supply.motors import Motor
 import wiringpi as wp
 
 import sys
