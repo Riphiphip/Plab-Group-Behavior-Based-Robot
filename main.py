@@ -1,4 +1,24 @@
-""" Main file """
+""" 
+Main file 
+
+Oppgave:
+    Jage en farget gjenstand uten å kollidere med andre hindringer eller
+    kjøre ut av banen.
+    Kamera: Leter etter gitt farge
+    IR: Passer på kantene
+    Ultralyd: Unngår kollisjon med andre gjenstander, gjenkjenner kollisjon
+    med målet
+
+Behaviors:
+    Idle: Tilfeldig hastighet, leter etter mål
+    EdgeDetection: Kant
+    Stop: Knappetrykk eller mål utført
+    (RemoteControl: Fjernstyring fra kommandolinje)
+
+Sensobs:
+    EdgeFinder
+    ColorFinder
+"""
 
 from project6_zumo.bbcon import BBCON
 from project6_zumo.arbitrator import Arbitrator
@@ -23,7 +43,7 @@ def main():
     print("Added behaviors:")
     for c in a.behaviors:
         print(c)
-    controller.motobs = [Motob(0.05)]
+    controller.motobs = [Motob(None)]
     print("Added motob")
     print("Running loop")
     while 1:

@@ -12,6 +12,7 @@ import math
 
 from PIL import Image
 from project6_supply.sensors.reflectance_sensors import ReflectanceSensors
+from project6_supply.sensors.ultrasonic import Ultrasonic
 
 
 class Sensob(ABC):
@@ -31,7 +32,7 @@ class Sensob(ABC):
     for many additional forms of preprocessing."""
 
     def __init__(self, sensors=[]):
-        self.prev_data = 1
+        self.data = 1
         self.sensors = sensors
 
     def update(self):
@@ -39,7 +40,7 @@ class Sensob(ABC):
         self.prevData = self.preprocess(raw_output)
 
     def get_value(self):
-        return self.prev_data
+        return self.data
 
     @abstractmethod
     def preprocess(self, sensor_data):
@@ -59,7 +60,7 @@ class EdgeFinder(Sensob):
 
     def update(self):
         raw_output = self.sensors[0].update()
-        self.prev_data = self.preprocess(raw_output)
+        self.data = self.preprocess(raw_output)
         return self.get_value()
 
 
@@ -109,4 +110,16 @@ class ColorFinder(Sensob):
         r_thresh = (int)(math.floor(ref_img.height/3))
         ref_img = ref_img.resize((1, 1), box=(l_thresh, 0, r_thresh, ref_img.height-1))
         self.color = ref_img.getpixel((0, 0))
-        print("Kalibrert farge: " + str(self.color))
+        print("Kalibrert farge: " + str(self.color))     
+
+class Collition(Sensob):
+    """ Ultrasound collition detection.
+    Returns distance in cm. """
+
+    def __init__(self, sensors=[Ultrasonic()]):
+        super().__init__(sensors=sensors)
+        # Set data to very high value
+        self.data = 1500
+
+    def preprocess(self, sensor_data):
+        return sensor_data

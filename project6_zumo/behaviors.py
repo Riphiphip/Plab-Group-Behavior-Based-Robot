@@ -6,7 +6,8 @@ import sys
 import random
 
 from abc import ABC, abstractmethod
-from project6_zumo.sensobs import EdgeFinder
+from project6_zumo.sensobs import EdgeFinder, ColorFinder, Collition
+from project6_supply.sensors.zumo_button import ZumoButton
 #from project6_zumo.bbcon import BBCON
 
 
@@ -84,12 +85,14 @@ class Behavior(ABC):
         """the core computations performed by the behavior that use sensob readings
         to produce motor recommendations (and halt requests)"""
 
+
 class ColorChasing(Behavior):
     """Chase a color"""
 
-    def __init__(self, priority, sensors=[], color=0):
+    def __init__(self, priority, sensors=[ColorFinder(), Collition()]):
         super().__init__(priority, sensors=sensors)
-        self.color = color
+        self.camera = sensors[0]
+        self.collition = sensors[1]
 
     def consider_activation(self):
         pass
@@ -98,6 +101,9 @@ class ColorChasing(Behavior):
         pass
     
     def sense_and_act(self):
+        """ camera.get_value() returns [float, float, float]
+        percentage of targeted color in left, middle and right
+        """
         abs_max = 255
         threshold = 210
         max_val = threshold
@@ -148,7 +154,7 @@ class EdgeDetection(Behavior):
         if self.sensors[0].get_value() < 0.7:
             self.match_deg = 1
         """
-        vals = self.sensors[0].update()
+        vals = self.sensors[0].get_value()
         print("My sensor are tingling, they say total light is:",vals)
 
         if self.match_deg > 0:
@@ -206,11 +212,11 @@ class RemoteControl(Behavior):
 class Idle(Behavior):
     """Idle wandering"""
 
-    def __init__(self, priority, load=5, sensors=list()):
+    def __init__(self, priority, load=5, maxmin=(10, 20), sensors=list()):
         super().__init__(priority, sensors=sensors)
         self.load = load
+        self.maxmin = maxmin
         self.countdown = 0
-        self.motor_recommendation = (0, 0)
 
     def consider_activation(self):
         pass
@@ -221,7 +227,7 @@ class Idle(Behavior):
     def update(self):
         """Return a random rotation and speed"""
         if not self.countdown:
-            self.motor_recommendation = (random.randint(-1, 1), random.randint(1, 2) / 10)
+            self.motor_recommendation = (random.randint(-1, 1), random.randint(self.maxmin[0], self.maxmin[1]) / 100)
             self.countdown = self.load
         else:
             self.countdown -= 1
@@ -230,6 +236,7 @@ class Idle(Behavior):
         """the core computations performed by the behavior that use sensob readings
         to produce motor recommendations (and halt requests)"""
         return self.motor_recommendation
+
 
 """
 The call to update will initiate calls to these other methods, since an update will involve the
