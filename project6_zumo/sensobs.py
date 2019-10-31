@@ -92,9 +92,9 @@ class ColorFinder(Sensob):
             partitions.append(sensor_data.crop(box=(i*seg_width, 0, (i+1)*seg_width, sensor_data.height-1)))
         for i, part in enumerate(partitions):
             valid_count = 0
-            pixel_count = seg_width * height
-            for x in range(seg_width):
-                for y in range(height):
+            pixel_count = (seg_width-1) * (height-1)
+            for x in range(seg_width-1):
+                for y in range(height-1):
                     for c, channel in enumerate(part.getpixel((x, y))):
                         if channel in range(self.color[c]-self.threshold, self.color[c] + self.threshold+1):
                             valid_count += 1
