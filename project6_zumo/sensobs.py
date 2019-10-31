@@ -13,6 +13,7 @@ import math
 from PIL import Image
 from project6_supply.sensors.reflectance_sensors import ReflectanceSensors
 from project6_supply.sensors.ultrasonic import Ultrasonic
+from project6_supply.sensors.camera import Camera
 
 
 class Sensob(ABC):
@@ -72,7 +73,7 @@ class ColorFinder(Sensob):
     Value: [left avg. color, middle avg. color, right avg.color]
     '''
 
-    def __init__(self, sensors=[], color=None, threshold=5, seg_number=3):
+    def __init__(self, sensors=[Camera()], color=None, threshold=5, seg_number=3):
         super().__init__(sensors=sensors)
         self.threshold = threshold
         self.seg_number = seg_number
@@ -103,7 +104,7 @@ class ColorFinder(Sensob):
     def update(self):
         output = []
         for camera in self.sensors:
-            output.append(self.preprocess(camera.get_value))
+            output.append(self.preprocess(camera.get_value()))
         return output
 
     def calibrate(self):
