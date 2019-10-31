@@ -3,6 +3,7 @@
 Created on Thu Oct 24 09:05:15 2019
 """
 import sys
+import random
 
 from abc import ABC, abstractmethod
 from project6_zumo.sensobs import EdgeFinder
@@ -199,6 +200,19 @@ class RemoteControl(Behavior):
         to produce motor recommendations (and halt requests)"""
         return self.motor_recommendation
 
+
+class Idle(Behavior):
+    """Idle wandering"""
+
+    def consider_activation(self):
+        pass
+
+    def consider_deactivation(self):
+        pass
+
+    def update(self):
+        """Return a random rotation and speed"""
+        self.motor_recommendation = (random.randint(-1, 1), random.randint(0, 50) / 100)
 
 """
 The call to update will initiate calls to these other methods, since an update will involve the
