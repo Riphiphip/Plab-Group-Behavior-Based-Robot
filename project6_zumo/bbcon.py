@@ -35,6 +35,9 @@ should contain (at least) the following instance variables:"""
     def add_behavior(self, behavior):
         """ append a newly-created behavior onto the behaviors list"""
         self.behaviors.append(behavior)
+        for sensob in behavior.sensors:
+            if sensob not in self.sensobs:
+                self.sensobs.append(sensob)
 
     def add_sensob(self, sensob):
         """- append a newly-created sensob onto the sensobs list"""
@@ -73,6 +76,7 @@ should contain (at least) the following instance variables:"""
         way."""
         #TODO: Make better
         for sensob in self.sensobs:
+            print("Updating sensob", sensob)
             for sensor in sensob.sensors:
                 sensor.update() # Updates the sensob objects internal states
             sensob.update()
