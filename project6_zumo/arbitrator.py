@@ -61,11 +61,15 @@ values should come directly from the winning behavior."""
         # i-1 since the first entry in cummulative_weight_list is 0, and the 0th behavior's weight is in the 1st position
         return (self.behaviors[i-1].motor_recommendation, self.behaviors[i-1].halt_rec)
         """
+        print("Me be le Arbitrator, me have ", self.behaviors)
         behavior_weights = []
         for behavior in self.behaviors:
             behavior_weights.append(behavior.get_weight())
+        print("Me arbitrator choose between weights",behavior_weights)
         max_index = 0
         for i in range(len(behavior_weights)):
             if behavior_weights[i] == max(behavior_weights):
                 max_index = i
+        print("Me Arbitrator think best index is:",i)
+        print("Me Arbitrator send recommendations", self.behaviors[i].motor_recommendation)
         return (self.behaviors[i].motor_recommendation, self.behaviors[i].halt_rec)
