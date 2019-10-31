@@ -34,7 +34,7 @@ import sys
 
 def main():
     wp.wiringPiSetupGpio()
-    m = Motor()
+    m = Motors()
     m.forward(0.2,0.2)
 
     btn = ZumoButton()
