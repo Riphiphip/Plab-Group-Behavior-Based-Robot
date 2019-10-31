@@ -6,7 +6,8 @@ import sys
 import random
 
 from abc import ABC, abstractmethod
-from project6_zumo.sensobs import EdgeFinder
+from project6_zumo.sensobs import EdgeFinder, ColorFinder
+from project6_supply.sensors.zumo_button import ZumoButton
 #from project6_zumo.bbcon import BBCON
 
 
@@ -108,7 +109,7 @@ class EdgeDetection(Behavior):
         if self.sensors[0].get_value() < 0.7:
             self.match_deg = 1
         """
-        vals = self.sensors[0].update()
+        vals = self.sensors[0].get_value()
         print("My sensor are tingling, they say total light is:",vals)
 
         if self.match_deg > 0:
@@ -167,9 +168,10 @@ class RemoteControl(Behavior):
 class Idle(Behavior):
     """Idle wandering"""
 
-    def __init__(self, priority, load=5, sensors=list()):
+    def __init__(self, priority, load=5, maxmin=(10, 20), sensors=list()):
         super().__init__(priority, sensors=sensors)
         self.load = load
+        self.maxmin = maxmin
         self.countdown = 0
         self.motor_recommendation = (0, 0)
 
@@ -182,7 +184,7 @@ class Idle(Behavior):
     def update(self):
         """Return a random rotation and speed"""
         if not self.countdown:
-            self.motor_recommendation = (random.randint(-1, 1), random.randint(0, 10) / 100)
+            self.motor_recommendation = (random.randint(-1, 1), random.randint(self.maxmin[0], self.maxmin[1]) / 100)
             self.countdown = self.load
         else:
             self.countdown -= 1
@@ -192,6 +194,22 @@ class Idle(Behavior):
         to produce motor recommendations (and halt requests)"""
         return self.motor_recommendation
 
+
+class Chaser(Behavior):
+    """Behavior to stop"""
+
+    def __init__(self, priority, color, sensors=list()):
+        super().__init__(priority, sensors=sensors)
+        self.motor_recommendation
+        self.target_color = color
+        self.camera = sensors[0]
+        self.collition = sensors[2]
+
+    def update(self):
+        self.sense_and_act()
+
+    def sense_and_act(self):
+        if self.camera.get_value() 
 """
 The call to update will initiate calls to these other methods, since an update will involve the
 following activities:
