@@ -87,12 +87,14 @@ class Behavior(ABC):
 
 
 class ColorChasing(Behavior):
-    """Chase a color"""
+    """Chase a color. Stop when it's hit"""
 
-    def __init__(self, priority, sensors=[ColorFinder(), Collition()]):
+    def __init__(self, priority, treshold=0.5, distance_treshold=2, sensors=[ColorFinder(), Collition()]):
         super().__init__(priority, sensors=sensors)
         self.camera = sensors[0]
         self.collition = sensors[1]
+        self.tresh = treshold
+        self.dist_tresh = distance_treshold
 
     def consider_activation(self):
         pass
@@ -101,26 +103,31 @@ class ColorChasing(Behavior):
         pass
     
     def sense_and_act(self):
-        """ camera.get_value() returns [float, float, float]
-        percentage of targeted color in left, middle and right
+        """ camera.get_value() returns [float, float, float] percentage of targeted color in left,
+        middle and right. Chase in direction with highest value if any is above treshold.
+        Stop if target is hit.
         """
-        abs_max = 255
-        threshold = 210
-        max_val = threshold
-        max_dir = -1
-        for i, direction in enumerate(self.sensors[0].get_value()[0]):
-            if direction > max_val:
-                max_val = direction
-                max_dir = i
-        self.match_deg = 1-((abs_max-max_val)/(abs_max-threshold))
-        if max_dir == 0:
-            self.motor_recommendation = (-1, 0.2)
-        elif max_dir == 1:
-            self.motor_recommendation = (0, 0.2)
-        elif max_dir == 2:
-            self.motor_recommendation = (1, 0.2)
+        cam = self.camera.get_value()
+        dist = self.collition.get_value()
+        hit = max(cam)
+        # Set match degree to hit
+        self.match_deg = hit
+        # Set direction
+        direction = cam.index(hit) - 1
+
+        if hit > self.tresh:
+            # Best hit is above treshold
+            self.match_deg = 1
+
+            if dist < self.dist_tresh:
+                # Target hit, stop
+                print("-----------\nTarget hit!\n-----------")
+                self.motor_recommendation = (0, 0)
+            else:
+                self.motor_recommendation = (direction, 0.5)
         else:
-            self.motor_recommendation = (random.randint(-1, 1), 0)
+            # Turn on place
+            self.motor_recommendation = (direction, 0)
     
     def update(self):
         if self.active:
