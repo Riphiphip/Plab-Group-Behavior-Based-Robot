@@ -81,26 +81,29 @@ class ColorFinder(Sensob):
         else:
             self.calibrate()
 
-    def preprocess(self, sensor_data: Image.Image):
+    def preprocess(self, sensor_data):
         '''Gives a percentage of pixels of an image classified as self.color'''
+        width = sensor_data.width
+        height = sensor_data.height
+        seg_width = (int)(math.floor(width/self.seg_number))
+        partitions = []
+        for i in range(self.seg_number):
+            partitions.append(sensor_data.crop(box=(i*seg_width+1, 0, (i+1)*seg_width, sensor_data.height-1)))
+        for i, part in enumerate(partitions):
+            valid_count = 0
+            pixel_count = seg_width * height
+            for x in range(seg_width):
+                for y in range(height):
+                    for c, channel in enumerate(part.getpixel((x, y))):
+                        if channel in range(self.color[c]-self.threshold, self.color[c] + self.threshold+1):
+                            valid_count += 1
+            partitions[i] = valid_count/pixel_count
+        return partitions
+
+    def update(self):
         output = []
-        for image in sensor_data:
-            width = image.width
-            height = image.height
-            seg_width = (int)(math.floor(width/self.seg_number))
-            partitions = []
-            for i in range(self.seg_number):
-                partitions.append(image.crop(box=(i*seg_width+1, 0, (i+1)*seg_width, image.height-1)))
-            for i, part in enumerate(partitions):
-                valid_count = 0
-                pixel_count = seg_width * height
-                for x in range(seg_width):
-                    for y in range(height):
-                        for c, channel in enumerate(part.getpixel((x, y))):
-                            if channel in range(self.color[c]-self.threshold, self.color[c] + self.threshold+1):
-                                valid_count += 1
-                partitions[i] = valid_count/pixel_count
-            output.append(partitions)
+        for camera in self.sensors:
+            output.append(self.preprocess(camera.get_value))
         return output
 
     def calibrate(self):
