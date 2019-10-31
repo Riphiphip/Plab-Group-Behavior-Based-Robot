@@ -67,7 +67,7 @@ class Sensob(ABC):
 
 class EdgeFinder(Sensob):
     """
-        Uses IR-sensors to look for edge
+        Uses Reflectance-sensors to look for edge
     """
 
     def __init__(self, sensors=[ReflectanceSensors(auto_calibrate=True)]):
@@ -79,4 +79,4 @@ class EdgeFinder(Sensob):
     def update(self):
         raw_output = self.sensors[0].update()
         self.prevData = self.preprocess(raw_output)
-        self.get_value()
+        return self.get_value()
