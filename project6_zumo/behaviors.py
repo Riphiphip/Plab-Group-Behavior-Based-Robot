@@ -7,8 +7,6 @@ import random
 
 from abc import ABC, abstractmethod
 from project6_zumo.sensobs import EdgeFinder, ColorFinder, Collition
-from project6_supply.sensors.zumo_button import ZumoButton
-#from project6_zumo.bbcon import BBCON
 
 
 class Behavior(ABC):
@@ -66,12 +64,10 @@ class Behavior(ABC):
         """Return weight"""
         return self.match_deg * self.priority
 
-    @abstractmethod
     def consider_deactivation(self):
         """whenever a behavior is active, it should test whether it should deactivate."""
         # Skjønner ikke hva denne skal gjøre
 
-    @abstractmethod
     def consider_activation(self):
         """whenever a behavior is inactive, it should test whether it should activate."""
         # Skjønner ikke hva denne skal gjøre
@@ -89,7 +85,8 @@ class Behavior(ABC):
 class ColorChasing(Behavior):
     """Chase a color. Stop when it's hit"""
 
-    def __init__(self, priority, treshold=0.5, distance_treshold=2, sensors=[ColorFinder(), Collition()]):
+    def __init__(self, priority, treshold=0.5, distance_treshold=2,
+                 sensors=[ColorFinder(), Collition()]):
         super().__init__(priority, sensors=sensors)
         self.camera = sensors[0]
         self.collition = sensors[1]
@@ -98,10 +95,10 @@ class ColorChasing(Behavior):
 
     def consider_activation(self):
         pass
-    
+
     def consider_deactivation(self):
         pass
-    
+
     def sense_and_act(self):
         """ camera.get_value() returns [float, float, float] percentage of targeted color in left,
         middle and right. Chase in direction with highest value if any is above treshold.
@@ -128,7 +125,7 @@ class ColorChasing(Behavior):
         else:
             # Turn on place
             self.motor_recommendation = (direction, 0)
-    
+
     def update(self):
         if self.active:
             self.sense_and_act()
@@ -137,21 +134,12 @@ class ColorChasing(Behavior):
             self.consider_activation()
 
 
-
 class EdgeDetection(Behavior):
     """Edge detection, avoid falling of the table"""
 
     def __init__(self, priority, sensors=[EdgeFinder()]):
         super().__init__(priority, sensors=sensors)
         self.motor_recommendation = (0, -0.4)
-
-    def consider_deactivation(self):
-        """whenever a behavior is active, it should test whether it should deactivate."""
-        # Skjønner ikke hva denne skal gjøre
-
-    def consider_activation(self):
-        """whenever a behavior is inactive, it should test whether it should activate."""
-        # Skjønner ikke hva denne skal gjøre
 
     def update(self):
         """the main interface between the bbcon and the behavior (detailed below)"""
@@ -162,22 +150,22 @@ class EdgeDetection(Behavior):
             self.match_deg = 1
         """
         vals = self.sensors[0].get_value()
-        print("My sensor are tingling, they say total light is:",vals)
+        print("My sensor are tingling, they say total light is:", vals)
 
         if self.match_deg > 0:
-            self.match_deg -= 0.01
+            self.match_deg -= 0.02
             if self.match_deg < 0:
                 self.match_deg = 0
+                print("Done backing")
         if min(vals) < 0.6:
             self.match_deg = 1
-  
-        
+            print("Shait, this is an edge, better back off!")
 
     def sense_and_act(self):
         """the core computations performed by the behavior that use sensob readings
         to produce motor recommendations (and halt requests)"""
         return self.motor_recommendation
-    
+
     def __str__(self):
         return "EdgeDetection Behavior"
 
@@ -234,11 +222,12 @@ class Idle(Behavior):
     def update(self):
         """Return a random rotation and speed"""
         if not self.countdown:
-            self.motor_recommendation = (random.randint(-1, 1), random.randint(self.maxmin[0], self.maxmin[1]) / 100)
+            self.motor_recommendation = (
+                random.randint(-1, 1), random.randint(self.maxmin[0], self.maxmin[1]) / 100)
             self.countdown = self.load
         else:
             self.countdown -= 1
-    
+
     def sense_and_act(self):
         """the core computations performed by the behavior that use sensob readings
         to produce motor recommendations (and halt requests)"""
