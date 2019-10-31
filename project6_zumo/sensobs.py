@@ -7,8 +7,10 @@ Created on Thu Oct 24 08:33:57 2019
 
 # import numpy as np
 # import cv2 as cv
-
 from abc import ABC, abstractmethod
+import math
+
+from PIL import Image
 from project6_supply.sensors.reflectance_sensors import ReflectanceSensors
 
 
@@ -78,3 +80,28 @@ class EdgeFinder(Sensob):
         for sensor in sensor_data:
             output = min(sensor)
         return output
+
+
+class ColorFinder(Sensob):
+    '''
+    Looks for color R, G or B in image and determines if
+    there is more of it to the left, right, center or not
+    enough at all
+    '''
+
+    def __init__(self, sensors=[], color=0):
+        super().__init__(sensors=sensors)
+        self.color = color
+
+    def preprocess(self, sensor_data: Image.Image):
+        seg_width = (int)(math.floor(sensor_data.width/3))
+        partitions = []
+        for i in range(3):
+            partitions.append(sensor_data.crop(box=(i*seg_width+1, 0, (i+1)*seg_width, sensor_data.height-1)))
+            print((i*seg_width+1, 0, (i+1)*seg_width, sensor_data.height-1))
+        
+        for i, img in enumerate(partitions):
+            partitions[i] = img.resize((1, 1)).getpixel(1, 1)[self.color]
+        
+        return partitions
+        
