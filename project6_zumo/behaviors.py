@@ -104,7 +104,7 @@ class ColorChasing(Behavior):
         middle and right. Chase in direction with highest value if any is above treshold.
         Stop if target is hit.
         """
-        cam = self.camera.get_value()
+        cam = self.camera.get_value()[0]
         dist = self.collition.get_value()
         hit = max(cam)
         # Set match degree to hit
