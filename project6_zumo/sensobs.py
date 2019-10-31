@@ -86,7 +86,8 @@ class ColorFinder(Sensob):
     '''
     Looks for color R, G or B in image and determines if
     there is more of it to the left, right, center or not
-    enough at all
+    enough at all.
+    Value: [left avg. color, middle avg. color, right avg.color]
     '''
 
     def __init__(self, sensors=[], color=0):
@@ -99,9 +100,7 @@ class ColorFinder(Sensob):
         for i in range(3):
             partitions.append(sensor_data.crop(box=(i*seg_width+1, 0, (i+1)*seg_width, sensor_data.height-1)))
             print((i*seg_width+1, 0, (i+1)*seg_width, sensor_data.height-1))
-        
         for i, img in enumerate(partitions):
             partitions[i] = img.resize((1, 1)).getpixel(1, 1)[self.color]
-        
         return partitions
         
