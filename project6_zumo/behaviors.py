@@ -113,7 +113,7 @@ class ColorChasing(Behavior):
             if cam[i] == max(cam):
                 max_index = i
                 self.match_deg = cam[i]
-                self.motor_recommendation(i-1, 0.2)
+                self.motor_recommendation = (i-1, 0.2)
         
         
         """
