@@ -11,6 +11,7 @@ import sys
 
 def main():
     btn = ZumoButton()
+    btn.wait_for_press()
     a = Arbitrator()
     controller = BBCON(a)
     print("Created controller")
