@@ -85,7 +85,7 @@ class Behavior(ABC):
 class ColorChasing(Behavior):
     """Chase a color. Stop when it's hit"""
 
-    def __init__(self, priority, treshold=0.5, distance_treshold=2,
+    def __init__(self, priority, treshold=0.1, distance_treshold=2,
                  sensors=[ColorFinder(), Collition()]):
         super().__init__(priority, sensors=sensors)
         self.camera = sensors[0]
@@ -103,6 +103,19 @@ class ColorChasing(Behavior):
         """ camera.get_value() returns [float, float, float] percentage of targeted color in left,
         middle and right. Chase in direction with highest value if any is above treshold.
         Stop if target is hit.
+        """
+        cam = self.camera.get_value()
+
+        max_index = 0
+        if self.match_deg != 0:
+            self.match_deg = 0
+        for i in range(3):
+            if cam[i] == max(cam):
+                max_index = i
+                self.match_deg = cam[i]
+                self.motor_recommendation(i-1, 0.2)
+        
+        
         """
         cam = self.camera.get_value()[0]
         dist = self.collition.get_value()
@@ -125,6 +138,7 @@ class ColorChasing(Behavior):
         else:
             # Turn on place
             self.motor_recommendation = (direction, 0)
+        """
 
     def update(self):
         if self.active:
@@ -153,7 +167,7 @@ class EdgeDetection(Behavior):
         print("My sensor are tingling, they say total light is:", vals)
 
         if self.match_deg > 0:
-            self.match_deg -= 0.1
+            self.match_deg -= 0.15
             if self.match_deg < 0:
                 self.match_deg = 0
                 print("Done backing")
@@ -207,7 +221,7 @@ class RemoteControl(Behavior):
 class Idle(Behavior):
     """Idle wandering"""
 
-    def __init__(self, priority, load=5, maxmin=(10, 20), sensors=list()):
+    def __init__(self, priority, load=5, maxmin=(15, 30), sensors=list()):
         super().__init__(priority, sensors=sensors)
         self.load = load
         self.maxmin = maxmin
@@ -222,6 +236,9 @@ class Idle(Behavior):
     def update(self):
         """Return a random rotation and speed"""
         if not self.countdown:
+            direction = random.randint(-1, 3)
+            if direction > 2: # Set preferance for turning right
+                direction = 2
             self.motor_recommendation = (
                 random.randint(-1, 1), random.randint(self.maxmin[0], self.maxmin[1]) / 100)
             self.countdown = self.load

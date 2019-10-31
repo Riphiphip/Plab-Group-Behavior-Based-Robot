@@ -14,6 +14,7 @@ from PIL import Image
 from project6_supply.sensors.reflectance_sensors import ReflectanceSensors
 from project6_supply.sensors.ultrasonic import Ultrasonic
 from project6_supply.sensors.camera import Camera
+from project6_supply.imager2 import Imager
 
 
 class Sensob(ABC):
@@ -81,6 +82,9 @@ class ColorFinder(Sensob):
         super().__init__(sensors=sensors)
         self.threshold = threshold
         self.seg_number = seg_number
+        self.camera = Camera()
+        self.picture = None
+        self.imager = Imager()
         if color:
             self.color = color
         else:
@@ -106,11 +110,29 @@ class ColorFinder(Sensob):
         return partitions
 
     def update(self):
-        output = []
-        for camera in self.sensors:
-            output.append(self.preprocess(camera.get_value()))
-        self.data = output
-        return output
+        self.picture = self.camera.update()
+        self.imager.set_image(self.picture)
+        
+        return self.find_direction()
+    
+    def find_direction(self):
+        self.imager.get_image_dims()
+        total_pixels = int(self.imager.xmax) * int(self.imager.ymax) / 3 #total pixel per side
+        list_sides = [0, 0, 0]
+        for side in range(3):
+            green_pixels = 0
+            for x in range(int(int(self.imager.xmax)/3)*(side),
+                           int(int(self.imager.xmax)/3)*(side+1)):
+                for y in range(int(self.imager.ymax)):
+                    r, g, b = self.imager.get_pixel(x, y)
+                    if r < 100 and g > 140 and b < 120:
+                        green_pixels += 1
+            list_sides[side] = green_pixels / total_pixels
+        self.data = list_sides
+        return list_sides
+
+    def get_pixel(self, x, y):
+        return self.picture.getpixel((x, y))
 
     def calibrate(self):
         '''Estimates color of object in front of camera to be used for reference'''
