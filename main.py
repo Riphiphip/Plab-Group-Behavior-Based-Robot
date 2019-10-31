@@ -20,11 +20,13 @@ Sensobs:
     ColorFinder
 """
 
+from RPi import GPIO
 from project6_zumo.bbcon import BBCON
 from project6_zumo.arbitrator import Arbitrator
 from project6_zumo.motob import Motob
 from project6_zumo.behaviors import RemoteControl, EdgeDetection, Idle
 from project6_supply.sensors.zumo_button import ZumoButton
+
 
 import sys
 import threading
@@ -46,14 +48,11 @@ def main():
     controller.motobs = [Motob(None)]
     print("Added motob")
     print("Running loop")
-    
-    def stopper():
-        btn.wait_for_press()
-        quit()
-    
-    t = threading.Thread(None, stopper)
-    t.start()
     while 1:
         controller.run_one_timestep()
 
-main()
+if __name__ == "__main__":
+    try:
+        main()
+    finally:
+        GPIO.cleanup()
