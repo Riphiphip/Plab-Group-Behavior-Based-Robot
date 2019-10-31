@@ -105,6 +105,7 @@ class ColorChasing(Behavior):
         Stop if target is hit.
         """
         cam = self.camera.get_value()
+        print("I am green detector, i see so much green here", cam)
 
         max_index = 0
         if self.match_deg != 0:
@@ -222,7 +223,7 @@ class RemoteControl(Behavior):
 class Idle(Behavior):
     """Idle wandering"""
 
-    def __init__(self, priority, load=5, maxmin=(15, 30), sensors=list()):
+    def __init__(self, priority, load=5, maxmin=(10, 20), sensors=list()):
         super().__init__(priority, sensors=sensors)
         self.load = load
         self.maxmin = maxmin
