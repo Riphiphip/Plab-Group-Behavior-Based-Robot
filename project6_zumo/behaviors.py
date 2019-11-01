@@ -141,7 +141,7 @@ class ColorChasing(Behavior):
                 self.motor_recommendation = (direction, 0.5)
         else:
             # Turn on place
-            self.motor_recommendation = (direction, 0)
+            self.motor_recommendation = (direction, 0.2)
         
 
     def update(self):

@@ -17,6 +17,5 @@ if __name__ == "__main__":
     try:
         while True:
             main(c, cam, b)
-            sleep(0.5)
     except KeyboardInterrupt:
         pass
