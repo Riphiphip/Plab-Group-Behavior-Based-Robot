@@ -144,7 +144,7 @@ class ColorFinder(Sensob):
         r_thresh = 2*l_thresh
         ref_img = ref_img.resize((1, 1), box=(l_thresh, 0, r_thresh, ref_img.height-1))
         pix_rgb = ref_img.getpixel((0, 0))
-        self.color = colorsys.rgb_to_hls(pix_rgb[0], pix_rgb[1], pix_rgb[2])
+        self.color = colorsys.rgb_to_hls(pix_rgb[0]/255, pix_rgb[1]/255, pix_rgb[2]/255)
         print("Kalibrert farge (HSV): " + str(self.color))     
 
 class Collition(Sensob):
