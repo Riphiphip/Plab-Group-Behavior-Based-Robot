@@ -156,4 +156,4 @@ class Collition(Sensob):
         return "Collition"
 
     def preprocess(self, sensor_data):
-        return sensor_data
+        return sensor_data[0]

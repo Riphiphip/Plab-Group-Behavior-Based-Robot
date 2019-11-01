@@ -150,6 +150,35 @@ class ColorChasing(Behavior):
             self.consider_activation()
 
 
+class Anti_crash(Behavior):
+    """Avoid crashing into an object"""
+
+    def __init__(self, priority, sensors=[Collition()]):
+        super().__init__(priority, sensors=sensors)
+        self.motor_recommendation = (0, 0)
+        self.match_deg = 0
+        self.collition = sensors[0]
+    
+    def update(self):
+        """analyze how near an object is"""
+        if self.active:
+            self.sense_and_act()
+            self.consider_deactivation()
+        else:
+            self.consider_activation()
+        
+
+    def sense_and_act(self):
+        """If objects are near, back off""""
+        dist = self.collition.get_value()
+        if dist < 7:
+            self.match_deg = 1
+            self.motor_recommendation(0,-0.2)
+        else:
+            self.match_deg = 0
+
+        return self.motor_recommendation
+
 class EdgeDetection(Behavior):
     """Edge detection, avoid falling of the table"""
 
