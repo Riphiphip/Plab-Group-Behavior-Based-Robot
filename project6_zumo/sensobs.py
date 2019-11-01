@@ -9,6 +9,7 @@ Created on Thu Oct 24 08:33:57 2019
 # import cv2 as cv
 from abc import ABC, abstractmethod
 import math
+import colorsys
 
 from PIL import Image
 from project6_supply.sensors.reflectance_sensors import ReflectanceSensors
@@ -99,12 +100,14 @@ class ColorFinder(Sensob):
             partitions.append(sensor_data.crop(box=(i*seg_width, 0, (i+1)*seg_width, sensor_data.height-1)))
         for i, part in enumerate(partitions):
             valid_count = 0
-            pixel_count = (seg_width-1) * (height-1)
+            pixel_count = 0
             for x in range(seg_width-1):
                 for y in range(height-1):
-                    for c, channel in enumerate(part.getpixel((x, y))):
-                        if channel in range(self.color[c]-self.threshold, self.color[c] + self.threshold+1):
-                            valid_count += 1
+                    pix = part.getpixel((x, y))
+                    hls_rep = colorsys.rgb_to_hls(pix[0], pix[1], pix[2])
+                    if hls_rep[0] < self.color[0] + self.threshold and hls_rep > self.color[1] - self.threshold:
+                        valid_count += 1
+                    pixel_count += 1
             partitions[i] = valid_count/pixel_count
         return partitions
 
@@ -140,8 +143,9 @@ class ColorFinder(Sensob):
         l_thresh = (int)(math.floor(ref_img.width/3))
         r_thresh = 2*l_thresh
         ref_img = ref_img.resize((1, 1), box=(l_thresh, 0, r_thresh, ref_img.height-1))
-        self.color = ref_img.getpixel((0, 0))
-        print("Kalibrert farge: " + str(self.color))     
+        pix_rgb = ref_img.getpixel((0, 0))
+        self.color = colorsys.rgb_to_hls(pix_rgb[0], pix_rgb[1], pix_rgb[2])
+        print("Kalibrert farge (HSV): " + str(self.color))     
 
 class Collition(Sensob):
     """ Ultrasound collition detection.
