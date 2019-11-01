@@ -156,4 +156,5 @@ class Collition(Sensob):
         return "Collition"
 
     def preprocess(self, sensor_data):
+        print("Ultrasonic snesob output is:",sensor_data[0])
         return sensor_data[0]

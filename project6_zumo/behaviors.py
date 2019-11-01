@@ -171,7 +171,7 @@ class Anti_crash(Behavior):
     def sense_and_act(self):
         """If objects are near, back off"""
         dist = self.collition.get_value()
-        if dist < 7:
+        if dist < 12:
             self.match_deg = 1
             self.motor_recommendation(0,-0.2)
         else:
