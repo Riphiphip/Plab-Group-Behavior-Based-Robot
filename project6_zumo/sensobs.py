@@ -79,7 +79,7 @@ class ColorFinder(Sensob):
     Value: [left avg. color, middle avg. color, right avg.color]
     '''
 
-    def __init__(self, sensors=[Camera()], color=None, threshold=5, seg_number=3):
+    def __init__(self, sensors=[Camera()], color=None, threshold=0.05, seg_number=3):
         super().__init__(sensors=sensors)
         self.threshold = threshold
         self.seg_number = seg_number
