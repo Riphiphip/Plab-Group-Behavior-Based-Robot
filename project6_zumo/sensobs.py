@@ -106,7 +106,7 @@ class ColorFinder(Sensob):
                     safe_pix = []
                     for val in pix:
                         safe_pix.append(min(1,val))
-                    hls_rep = colorsys.rgb_to_hls(pix[0], pix[1], pix[2])
+                    hls_rep = colorsys.rgb_to_hls(safe_pix[0], safe_pix[1], safe_pix[2])
                     if hls_rep[0] < self.color[0] + self.threshold and hls_rep[0] > self.color[1] - self.threshold:
                         valid_count += 1
                     pixel_count += 1
