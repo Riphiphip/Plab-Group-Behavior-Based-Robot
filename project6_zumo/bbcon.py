@@ -79,24 +79,17 @@ should contain (at least) the following instance variables:"""
         way."""
         #TODO: Make better
         for sensob in self.sensobs:
-            print("Updating sensob", sensob)
             for sensor in sensob.sensors:
                 sensor.update() # Updates the sensob objects internal states
             sensob.update()
-        print("Updated sensor values")
         for behavior in self.behaviors:
             behavior.update() # Looks at the sensob objects internal state
-        print("Updated behaviors")
         motor_recommendations, is_halting = self.arbitrator.choose_action()
         print("Motor recom is: ", motor_recommendations)
-        print("is it halting: ", is_halting)
 
         if not is_halting:
             for motob in self.motobs:
-                print("this is motob: ", motob)
-                print("Im now going to update motobs")
                 motob.update(motor_recommendations)
-                print("Ii have updated, now i sleep")
                 sleep(0.05)
         # .reset() should be implemented or not used at all
         #for sensob in self.sensobs:

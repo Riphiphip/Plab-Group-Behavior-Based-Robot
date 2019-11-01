@@ -133,7 +133,7 @@ class ColorChasing(Behavior):
                 print("-----------\nTarget hit!\n-----------")
                 self.motor_recommendation = (0, 0)
             else:
-                self.motor_recommendation = (direction, 0.5)
+                self.motor_recommendation = (direction, 0.2)
         else:
             # Turn on place
             self.motor_recommendation = (direction, 0)
