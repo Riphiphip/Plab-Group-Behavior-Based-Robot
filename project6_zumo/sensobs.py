@@ -105,7 +105,7 @@ class ColorFinder(Sensob):
                 for y in range(height-1):
                     pix = part.getpixel((x, y))
                     hls_rep = colorsys.rgb_to_hls(pix[0], pix[1], pix[2])
-                    if hls_rep[0] < self.color[0] + self.threshold and hls_rep > self.color[1] - self.threshold:
+                    if hls_rep[0] < self.color[0] + self.threshold and hls_rep[0] > self.color[1] - self.threshold:
                         valid_count += 1
                     pixel_count += 1
             partitions[i] = valid_count/pixel_count
