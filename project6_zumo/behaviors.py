@@ -160,26 +160,21 @@ class Anti_crash(Behavior):
         """analyze how near an object is"""
         self.sensors[0].update()
         if self.active:
-            print("Ultrasonic is considered active")
             self.sense_and_act()
             self.consider_deactivation()
         else:
-            print("Ultrasonic is considered UNACTIVE?!")
             self.consider_activation()
         
 
     def sense_and_act(self):
         """If objects are near, back off"""
         dist = self.collition.get_value()
-        print("Ultarsonic behavoir sees distance as:", dist)
         if dist == None:
             dist = 1000
         if dist < 12:
             self.match_deg = 1
         else:
             self.match_deg = 0
-        print("Ultrasonic match degree is", self.match_deg)
-
         return self.motor_recommendation
 
 class EdgeDetection(Behavior):
@@ -204,10 +199,8 @@ class EdgeDetection(Behavior):
             self.match_deg -= 1   #0.15
             if self.match_deg < 0:
                 self.match_deg = 0
-                print("Done backing")
         if min(vals) < 0.6:
             self.match_deg = 1
-            print("Shait, this is an edge, better back off!")
 
     def sense_and_act(self):
         """the core computations performed by the behavior that use sensob readings

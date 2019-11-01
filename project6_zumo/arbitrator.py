@@ -68,5 +68,4 @@ values should come directly from the winning behavior."""
         for i in range(len(behavior_weights)):
             if behavior_weights[i] == max(behavior_weights):
                 max_index = i
-        print("Me Arbitrator think best index is:",self.behaviors[max_index])
         return (self.behaviors[max_index].motor_recommendation, self.behaviors[max_index].halt_rec)

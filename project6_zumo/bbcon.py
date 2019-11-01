@@ -85,8 +85,6 @@ should contain (at least) the following instance variables:"""
         for behavior in self.behaviors:
             behavior.update() # Looks at the sensob objects internal state
         motor_recommendations, is_halting = self.arbitrator.choose_action()
-        print("Motor recom is: ", motor_recommendations)
-
         if not is_halting:
             for motob in self.motobs:
                 motob.update(motor_recommendations)

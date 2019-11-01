@@ -43,7 +43,6 @@ class Motob:
 
     def update(self, motor_recommendation: (int, float)):
         """Set motors to recommended settings"""
-        print("I am motob, i will update with recomendations", motor_recommendation)
         self.value = motor_recommendation
         self.operationalize(motor_recommendation)
 
