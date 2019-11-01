@@ -77,13 +77,19 @@ should contain (at least) the following instance variables:"""
         forward or turning.
         6. Reset the sensobs - Each sensob may need to reset itself, or its associated sensor(s), in some
         way."""
-        #TODO: Make better
+        
         for sensob in self.sensobs:
             for sensor in sensob.sensors:
                 sensor.update() # Updates the sensob objects internal states
             sensob.update()
         for behavior in self.behaviors:
-            behavior.update() # Looks at the sensob objects internal state
+            if behavior.active:
+                behavior.update() # Looks at the sensob objects internal state
+                if behavior.consider_deactivation():
+                    self.deactive_behavior(behavior)
+            elif behavior.consisider_activation():
+                self.activate_behavior(behavior)
+                
         motor_recommendations, is_halting = self.arbitrator.choose_action()
         if not is_halting:
             for motob in self.motobs:
