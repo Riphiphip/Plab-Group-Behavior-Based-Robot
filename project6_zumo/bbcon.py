@@ -49,6 +49,7 @@ should contain (at least) the following instance variables:"""
         if behavior in self.behaviors:
             self.active_behaviors.append(behavior)
             self.arbitrator.add_behavior(behavior)
+            behavior.active = True
         else:
             print("That behavior does not exist")
 
@@ -57,6 +58,7 @@ should contain (at least) the following instance variables:"""
         if behavior in self.active_behaviors:
             self.active_behaviors.remove(behavior)
             self.arbitrator.remove_behavior(behavior)
+            behavior.active = False
         else:
             print("That behavior does not exist")
 

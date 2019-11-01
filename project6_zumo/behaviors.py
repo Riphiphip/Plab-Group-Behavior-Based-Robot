@@ -155,27 +155,32 @@ class Anti_crash(Behavior):
 
     def __init__(self, priority, sensors=[Collition()]):
         super().__init__(priority, sensors=sensors)
-        self.motor_recommendation = (0, 0)
+        self.motor_recommendation = (0, -0.2)
         self.match_deg = 0
         self.collition = sensors[0]
     
     def update(self):
         """analyze how near an object is"""
         if self.active:
+            print("Ultrasonic is considered active")
             self.sense_and_act()
             self.consider_deactivation()
         else:
+            print("Ultrasonic is considered UNACTIVE?!")
             self.consider_activation()
         
 
     def sense_and_act(self):
         """If objects are near, back off"""
         dist = self.collition.get_value()
+        print("Ultarsonic behavoir sees distance as:", dist)
+        if dist == None:
+            dist = 1000
         if dist < 12:
             self.match_deg = 1
-            self.motor_recommendation(0,-0.2)
         else:
             self.match_deg = 0
+        print("Ultrasonic match degree is", self.match_deg)
 
         return self.motor_recommendation
 
