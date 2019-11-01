@@ -103,8 +103,9 @@ class ColorFinder(Sensob):
             for x in range(seg_width-1):
                 for y in range(height-1):
                     pix = part.getpixel((x, y))
-                    for channel, val in enumerate(pix):
-                        pix[channel] = 1 if val <=0 else val
+                    safe_pix = []
+                    for val in pix:
+                        safe_pix.append(min(1,val))
                     hls_rep = colorsys.rgb_to_hls(pix[0], pix[1], pix[2])
                     if hls_rep[0] < self.color[0] + self.threshold and hls_rep[0] > self.color[1] - self.threshold:
                         valid_count += 1
