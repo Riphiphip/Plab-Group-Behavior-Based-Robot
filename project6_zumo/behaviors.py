@@ -196,7 +196,6 @@ class EdgeDetection(Behavior):
             self.match_deg = 1
         """
         vals = self.sensors[0].get_value()
-        print("My sensor are tingling, they say total light is:", vals)
 
         if self.match_deg > 0:
             self.match_deg -= 1   #0.15

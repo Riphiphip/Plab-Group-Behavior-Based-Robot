@@ -66,7 +66,6 @@ class EdgeFinder(Sensob):
 
     def update(self):
         raw_output = self.sensors[0].update()
-        print("IR sensors returns", raw_output)
         self.data = self.preprocess(raw_output)
         return self.data
 
@@ -104,6 +103,8 @@ class ColorFinder(Sensob):
             for x in range(seg_width-1):
                 for y in range(height-1):
                     pix = part.getpixel((x, y))
+                    for channel, val in enumerate(pix):
+                        pix[channel] = 1 if val <=0 else val
                     hls_rep = colorsys.rgb_to_hls(pix[0], pix[1], pix[2])
                     if hls_rep[0] < self.color[0] + self.threshold and hls_rep[0] > self.color[1] - self.threshold:
                         valid_count += 1
@@ -165,6 +166,5 @@ class Collition(Sensob):
         
 
     def preprocess(self, sensor_data):
-        print("Ultrasonic snesob output is:",sensor_data[0])
         self.data = sensor_data[0]
         return sensor_data[0]
