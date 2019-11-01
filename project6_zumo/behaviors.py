@@ -85,7 +85,7 @@ class Behavior(ABC):
 class ColorChasing(Behavior):
     """Chase a color. Stop when it's hit"""
 
-    def __init__(self, priority, treshold=0.65, distance_treshold=2,
+    def __init__(self, priority, treshold=0.7, distance_treshold=2,
                  sensors=[ColorFinder(), Collition()]):
         super().__init__(priority, sensors=sensors)
         self.camera = sensors[0]
@@ -119,6 +119,10 @@ class ColorChasing(Behavior):
         cam = self.camera.get_value()[0]
         dist = self.collition.get_value()
         hit = max(cam)
+        if hit < 0.4:
+            hit = 0
+        else:
+            print("I see red!")
         # Set match degree to hit
         self.match_deg = min(hit,1)
         # Set direction
@@ -133,7 +137,7 @@ class ColorChasing(Behavior):
                 print("-----------\nTarget hit!\n-----------")
                 self.motor_recommendation = (0, 0)
             else:
-                self.motor_recommendation = (direction, 0.2)
+                self.motor_recommendation = (direction, 0.5)
         else:
             # Turn on place
             self.motor_recommendation = (direction, 0)
