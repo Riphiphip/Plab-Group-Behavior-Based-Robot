@@ -155,6 +155,12 @@ class Collition(Sensob):
     def __str__(self):
         return "Collition"
 
+    def update(self):
+        raw_output = [s.get_value() for s in self.sensors]
+        self.data = self.preprocess(raw_output)
+        
+
     def preprocess(self, sensor_data):
         print("Ultrasonic snesob output is:",sensor_data[0])
         self.data = sensor_data[0]
+        return sensor_data[0]
