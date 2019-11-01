@@ -14,6 +14,7 @@ if __name__ == "__main__":
     cam = Camera()
     c = ColorFinder(sensors=[cam])
     b = ColorChasing(10, sensors=[c, Collition()])
+    b.active = True
     try:
         while True:
             main(c, cam, b)
