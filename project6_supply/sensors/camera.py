@@ -10,7 +10,7 @@ class Camera():
     """
     Uses RasPi camera to take a picture and save.
     """
-    def __init__(self, img_width=50, img_height=37, filetype="png", camera=PiCamera()):
+    def __init__(self, img_width=50, img_height=37, filetype="jpeg", camera=PiCamera()):
         
         self.camera = camera
         self.camera.resolution= (img_width, img_height)
