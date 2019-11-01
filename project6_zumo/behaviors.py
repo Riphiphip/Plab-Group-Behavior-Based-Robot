@@ -131,7 +131,7 @@ class ColorChasing(Behavior):
             # Best hit is above treshold
             self.match_deg = 1
             print("Target aquired in sector ", direction)
-            print("Certainty: " + hit)
+            print("Certainty: ", hit)
 
             if dist <= self.dist_tresh:
                 # Target hit, stop
