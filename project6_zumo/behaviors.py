@@ -271,7 +271,7 @@ class Idle(Behavior):
             if direction > 2: # Set preferance for turning right
                 direction = 2
             self.motor_recommendation = (
-                random.randint(-1, 1), random.randint(self.maxmin[0], self.maxmin[1]) / 100)
+                random.randint(-1, 1), random.randint(self.maxmin[0], self.maxmin[1]) / 50)
             self.countdown = self.load
         else:
             self.countdown -= 1
