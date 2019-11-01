@@ -161,6 +161,7 @@ class Anti_crash(Behavior):
     
     def update(self):
         """analyze how near an object is"""
+        self.sensors[0].update()
         if self.active:
             print("Ultrasonic is considered active")
             self.sense_and_act()
