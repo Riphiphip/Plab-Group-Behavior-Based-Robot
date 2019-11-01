@@ -16,7 +16,11 @@ class Camera():
         self.camera.resolution= (img_width, img_height)
         self.value = None
         self.filetype = str(filetype)
+        self.camera.start_preview()
         sleep(2)
+
+    def __del__(self):
+        self.camera.stop_preview()
 
     def get_value(self):
         """Getter for value"""
@@ -34,3 +38,4 @@ class Camera():
     def sensor_get_value(self):
         self.camera.capture('project6_supply/sensors/image.'+self.filetype, use_video_port=True)
         self.value = Image.open('project6_supply/sensors/image.'+self.filetype).convert('RGB')
+        sleep(0.02)
