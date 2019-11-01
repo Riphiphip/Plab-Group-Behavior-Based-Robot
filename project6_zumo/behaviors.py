@@ -118,7 +118,7 @@ class ColorChasing(Behavior):
                 
         cam = self.camera.get_value()[0]
         dist = self.collition.get_value()
-        hit = max(cam)
+        hit = max(cam) if cam[1] < 0.9 else cam[1]
         # Set match degree to hit
         if hit > 0.1:
             self.match_deg = hit
@@ -130,6 +130,8 @@ class ColorChasing(Behavior):
         if hit > self.tresh:
             # Best hit is above treshold
             self.match_deg = 1
+            print("Target aquired in sector ", direction)
+            print("Certainty: " + hit)
 
             if dist <= self.dist_tresh:
                 # Target hit, stop
