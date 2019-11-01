@@ -174,6 +174,8 @@ class Anti_crash(Behavior):
         """If objects are near, back off"""
         dist = self.collition.get_value()
         print("Ultarsonic behavoir sees distance as:", dist)
+        if dist == None:
+            dist = 1000
         if dist < 12:
             self.match_deg = 1
         else:
