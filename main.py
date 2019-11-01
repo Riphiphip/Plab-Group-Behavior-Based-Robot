@@ -6,8 +6,8 @@ Oppgave:
     kjøre ut av banen.
     Kamera: Leter etter gitt farge
     IR: Passer på kantene
-    Ultralyd: Unngår kollisjon med andre gjenstander, gjenkjenner kollisjon
-    med målet
+    Ultralyd: Unngår kollisjon med andre gjenstander
+    Alternativt: beskytte reviret sitt fra statistikkhefter
 
 Behaviors:
     Idle: Tilfeldig hastighet, leter etter mål

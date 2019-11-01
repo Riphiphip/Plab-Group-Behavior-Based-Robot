@@ -94,10 +94,10 @@ class ColorChasing(Behavior):
         self.dist_tresh = distance_treshold
 
     def consider_activation(self):
-        pass
+        return True
 
     def consider_deactivation(self):
-        pass
+        return False
 
     def sense_and_act(self):
         """ camera.get_value() returns [float, float, float] percentage of targeted color in left,
@@ -134,6 +134,7 @@ class ColorChasing(Behavior):
             print("Certainty: ", hit)
 
             if dist <= self.dist_tresh:
+                # Fungerer ikke selv, men resten funker. IKKE FJERN!!!!!!
                 # Target hit, stop
                 print("-----------\nTarget hit!\n-----------")
                 self.motor_recommendation = (0, 0)

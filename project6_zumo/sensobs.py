@@ -72,10 +72,9 @@ class EdgeFinder(Sensob):
 
 class ColorFinder(Sensob):
     '''
-    Looks for color R, G or B in image and determines if
-    there is more of it to the left, right, center or not
-    enough at all.
-    Value: [left avg. color, middle avg. color, right avg.color]
+    Takes the average color of an object and tells how much
+    of an image is a similar hue. Returns fractional amounts
+    for the left, middle and right thirds of the image
     '''
 
     def __init__(self, sensors=[Camera()], color=None, threshold=0.05, seg_number=3):
@@ -90,7 +89,7 @@ class ColorFinder(Sensob):
             self.calibrate()
 
     def preprocess(self, sensor_data):
-        '''Gives a percentage of pixels of an image classified as self.color'''
+        """Processes raw image data into relevant location data"""
         width = sensor_data.width
         height = sensor_data.height
         seg_width = (int)(math.floor(width/self.seg_number))
@@ -117,25 +116,6 @@ class ColorFinder(Sensob):
             output.append(self.preprocess(camera.get_value()))
         self.data = output
         return output
-    
-    # def find_direction(self):
-    #     self.imager.get_image_dims()
-    #     total_pixels = int(self.imager.xmax) * int(self.imager.ymax) / 3 #total pixel per side
-    #     list_sides = [0, 0, 0]
-    #     for side in range(3):
-    #         green_pixels = 0
-    #         for x in range(int(int(self.imager.xmax)/3)*(side),
-    #                        int(int(self.imager.xmax)/3)*(side+1)):
-    #             for y in range(int(self.imager.ymax)):
-    #                 r, g, b = self.imager.get_pixel(x, y)
-    #                 if g-r > 40 and g-b > 40:
-    #                     green_pixels += 1
-    #         list_sides[side] = green_pixels / total_pixels
-    #     self.data = list_sides
-    #     return list_sides
-
-    # def get_pixel(self, x, y):
-    #     return self.picture.getpixel((x, y))
 
     def calibrate(self):
         '''Estimates color of object in front of camera to be used for reference'''
