@@ -83,8 +83,7 @@ class ColorFinder(Sensob):
         self.threshold = threshold
         self.seg_number = seg_number
         self.camera = Camera()
-        self.picture = None
-        self.imager = Imager()
+        self.data = None
         if color:
             self.color = color
         else:
@@ -110,29 +109,30 @@ class ColorFinder(Sensob):
         return partitions
 
     def update(self):
-        self.picture = self.camera.update()
-        self.imager.set_image(self.picture)
-        
-        return self.find_direction()
+        output = []
+        for camera in self.sensors:
+            output.append(self.preprocess(camera.get_value()))
+        self.data = output
+        return output
     
-    def find_direction(self):
-        self.imager.get_image_dims()
-        total_pixels = int(self.imager.xmax) * int(self.imager.ymax) / 3 #total pixel per side
-        list_sides = [0, 0, 0]
-        for side in range(3):
-            green_pixels = 0
-            for x in range(int(int(self.imager.xmax)/3)*(side),
-                           int(int(self.imager.xmax)/3)*(side+1)):
-                for y in range(int(self.imager.ymax)):
-                    r, g, b = self.imager.get_pixel(x, y)
-                    if g-r > 40 and g-b > 40:
-                        green_pixels += 1
-            list_sides[side] = green_pixels / total_pixels
-        self.data = list_sides
-        return list_sides
+    # def find_direction(self):
+    #     self.imager.get_image_dims()
+    #     total_pixels = int(self.imager.xmax) * int(self.imager.ymax) / 3 #total pixel per side
+    #     list_sides = [0, 0, 0]
+    #     for side in range(3):
+    #         green_pixels = 0
+    #         for x in range(int(int(self.imager.xmax)/3)*(side),
+    #                        int(int(self.imager.xmax)/3)*(side+1)):
+    #             for y in range(int(self.imager.ymax)):
+    #                 r, g, b = self.imager.get_pixel(x, y)
+    #                 if g-r > 40 and g-b > 40:
+    #                     green_pixels += 1
+    #         list_sides[side] = green_pixels / total_pixels
+    #     self.data = list_sides
+    #     return list_sides
 
-    def get_pixel(self, x, y):
-        return self.picture.getpixel((x, y))
+    # def get_pixel(self, x, y):
+    #     return self.picture.getpixel((x, y))
 
     def calibrate(self):
         '''Estimates color of object in front of camera to be used for reference'''
