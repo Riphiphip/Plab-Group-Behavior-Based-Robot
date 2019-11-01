@@ -24,9 +24,10 @@ from RPi import GPIO
 from project6_zumo.bbcon import BBCON
 from project6_zumo.arbitrator import Arbitrator
 from project6_zumo.motob import Motob
-from project6_zumo.behaviors import RemoteControl, EdgeDetection, Idle, Anti_crash
+from project6_zumo.behaviors import RemoteControl, EdgeDetection, Idle, Anti_crash, ColorChasing
 from project6_supply.sensors.zumo_button import ZumoButton
 from project6_supply.motors import Motors
+from project6_zumo.sensobs import Collition, ColorFinder
 import wiringpi as wp
 
 import sys
@@ -42,10 +43,14 @@ def main():
     a = Arbitrator()
     controller = BBCON(a)
     print("Created controller")
+    collition_detector = Collition()
+    color_finder = ColorFinder()
+    print("Created common sensobs")
     #controller.add_behavior(RemoteControl(10))
     controller.add_behavior(EdgeDetection(100))
-    controller.add_behavior(Anti_crash(50))
+    #controller.add_behavior(Anti_crash(50, sensors=[collition_detector]))
     controller.add_behavior(Idle(1))
+    controller.add_behavior(ColorChasing(10, sensors=[color_finder, collition_detector]))
     controller.activate_behavior(controller.behaviors[0])
     controller.activate_behavior(controller.behaviors[1])
     controller.activate_behavior(controller.behaviors[2])

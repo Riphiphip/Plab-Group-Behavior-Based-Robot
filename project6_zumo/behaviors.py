@@ -85,7 +85,7 @@ class Behavior(ABC):
 class ColorChasing(Behavior):
     """Chase a color. Stop when it's hit"""
 
-    def __init__(self, priority, treshold=0.1, distance_treshold=2,
+    def __init__(self, priority, treshold=0.65, distance_treshold=2,
                  sensors=[ColorFinder(), Collition()]):
         super().__init__(priority, sensors=sensors)
         self.camera = sensors[0]
@@ -104,26 +104,23 @@ class ColorChasing(Behavior):
         middle and right. Chase in direction with highest value if any is above treshold.
         Stop if target is hit.
         """
-        cam = self.camera.get_value()
-        print("I am green detector, i see so much green here", cam)
+        # cam = self.camera.get_value()
+        # print("I am green detector, i see so much green here", cam)
 
-        max_index = 0
-        if self.match_deg != 0:
-            self.match_deg = 0
-        for i in range(3):
-            if cam[i] == max(cam):
-                max_index = i
-                self.match_deg = cam[i]
-                self.motor_recommendation = (i-1, 0.2)
+        # max_index = 0
+        # if self.match_deg != 0:
+        #     self.match_deg = 0
+        # for i in range(3):
+        #     if cam[i] == max(cam):
+        #         max_index = i
+        #         self.match_deg = cam[i]
+        #         self.motor_recommendation = (i-1, 0.2)
                 
-        
-        
-        """
         cam = self.camera.get_value()[0]
         dist = self.collition.get_value()
         hit = max(cam)
         # Set match degree to hit
-        self.match_deg = hit
+        self.match_deg = min(hit,1)
         # Set direction
         direction = cam.index(hit) - 1
 
@@ -140,7 +137,7 @@ class ColorChasing(Behavior):
         else:
             # Turn on place
             self.motor_recommendation = (direction, 0)
-        """
+        
 
     def update(self):
         if self.active:
