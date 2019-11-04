@@ -16,16 +16,17 @@ from project6_zumo.sensobs import Sensob
 
 
 class BBCON:
-    """The highest-level class, BBCON (Behavior-Based Controller) should only require one instance (per
-robot). At each timestep, the robot should call its bbcon to determine its next move. A bbcon
-should contain (at least) the following instance variables:"""
+    """The highest-level class, BBCON (Behavior-Based Controller) should only require one instance
+    (per robot). At each timestep, the robot should call its bbcon to determine its next move.
+    A bbcon should contain (at least) the following instance variables:"""
 
     def __init__(self, arbitrator):
         """behaviors - a list of all the behavior objects used by the bbcon
         2. active-behaviors - a list of all behaviors that are currently active.
         3. sensobs - a list of all sensory objects used by the bbcon
         4. motobs - a list of all motor objects used by the bbcon
-        5. arbitrator - the arbitrator object that will resolve actuator requests produced by the behaviors."""
+        5. arbitrator - the arbitrator object that will resolve actuator requests produced by the
+        behaviors."""
         self.behaviors = []
         self.active_behaviors = []
         self.sensobs = []
@@ -63,20 +64,23 @@ should contain (at least) the following instance variables:"""
             print("That behavior does not exist")
 
     def  run_one_timestep(self):
-        """In addition, BBCON must include a method named run one timestep, which constitutes the core
-        BBCON activity. It should perform (at least) the following actions on each call:
-            """
-        """1. Update all sensobs - These updates will involve querying the relevant sensors for their values, along with any pre-processing of those values (as described below)
-        2. Update all behaviors - These updates involve reading relevant sensob values and producing
-        a motor recommendation.
-        3. Invoke the arbitrator by calling arbitrator.choose action, which will choose a winning behavior and return that behavior’s motor recommendations and halt request flag.
+        """In addition, BBCON must include a method named run one timestep, which constitutes the
+        core BBCON activity. It should perform (at least) the following actions on each call:
+
+        1. Update all sensobs - These updates will involve querying the relevant sensors for their
+        values, along with any pre-processing of those values (as described below)
+        2. Update all behaviors - These updates involve reading relevant sensob values and
+        producing a motor recommendation.
+        3. Invoke the arbitrator by calling arbitrator.choose action, which will choose a winning
+        behavior and return that behavior’s motor recommendations and halt request flag.
         4. Update the motobs based on these motor recommendations. The motobs will then update
         the settings of all motors.
-        5. Wait - This pause (in code execution) will allow the motor settings to remain active for a short
+        5. Wait - This pause (in code execution) will allow the motor settings to remain active for
+        a short
         period of time, e.g., one half second, thus producing activity in the robot, such as moving
         forward or turning.
-        6. Reset the sensobs - Each sensob may need to reset itself, or its associated sensor(s), in some
-        way."""
+        6. Reset the sensobs - Each sensob may need to reset itself, or its associated sensor(s),
+        in some way."""
         
         for sensob in self.sensobs:
             for sensor in sensob.sensors:
