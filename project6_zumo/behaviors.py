@@ -85,7 +85,7 @@ class Behavior(ABC):
 class ColorChasing(Behavior):
     """Chase a color. Stop when it's hit"""
 
-    def __init__(self, priority, treshold=0.2, distance_treshold=2,
+    def __init__(self, priority, treshold=0.4, distance_treshold=2,
                  sensors=[ColorFinder(), Collition()]):
         super().__init__(priority, sensors=sensors)
         self.camera = sensors[0]
