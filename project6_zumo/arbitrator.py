@@ -45,7 +45,6 @@ of stochasticity. 4
 2. a boolean indicating whether or not the run should be halted.
 In the cases of the simple deterministic and the stochastic arbitration strategies, both of these
 values should come directly from the winning behavior."""
-        
         """
         cummulative_weight_list = [0]
         for behavior in self.behaviors:
@@ -58,7 +57,8 @@ values should come directly from the winning behavior."""
         i = 0
         while cummulative_weight_list[i] < choice:
             i += 1
-        # i-1 since the first entry in cummulative_weight_list is 0, and the 0th behavior's weight is in the 1st position
+        # i-1 since the first entry in cummulative_weight_list is 0, and the 0th behavior's weight
+        # is in the 1st position
         return (self.behaviors[i-1].motor_recommendation, self.behaviors[i-1].halt_rec)
         """
         behavior_weights = []
