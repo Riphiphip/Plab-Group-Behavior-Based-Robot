@@ -36,7 +36,7 @@ import sys
 def main():
     wp.wiringPiSetupGpio()
     m = Motors()
-    m.forward(0.2,0.2)
+    m.forward(0.2, 0.2)
 
     btn = ZumoButton()
     btn.wait_for_press()
@@ -46,11 +46,12 @@ def main():
     collition_detector = Collition()
     color_finder = ColorFinder()
     print("Created common sensobs")
-    #controller.add_behavior(RemoteControl(10))
+    # controller.add_behavior(RemoteControl(10))
     controller.add_behavior(EdgeDetection(100))
     controller.add_behavior(Anti_crash(10, sensors=[collition_detector]))
     controller.add_behavior(Idle(1))
-    controller.add_behavior(ColorChasing(15, sensors=[color_finder, collition_detector]))
+    controller.add_behavior(ColorChasing(
+        15, sensors=[color_finder, collition_detector]))
     controller.activate_behavior(controller.behaviors[0])
     controller.activate_behavior(controller.behaviors[1])
     controller.activate_behavior(controller.behaviors[2])
@@ -63,6 +64,7 @@ def main():
     print("Running loop")
     while 1:
         controller.run_one_timestep()
+
 
 if __name__ == "__main__":
     try:
